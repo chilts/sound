@@ -26,6 +26,14 @@ var schemaForIntegers = {
     int9 : sound.integer().required().name('Int9').max(8).min(3),
 };
 
+var schemaForUrls = {
+    url1 : sound.string().required().isUrl(),
+    url2 : sound.string().required().isUrl(),
+    url3 : sound.string().required().isUrl(),
+    url4 : sound.string().required().isUrl(),
+    url5 : sound.string().required().isUrl(),
+};
+
 var tests = [
 
     {
@@ -133,6 +141,33 @@ var tests = [
             // for these, the first error should be these
             t.ok(err.int7, "int7 should be at least 3'");
             t.ok(err.int9, "int9 should be at most 8'");
+
+            t.end();
+        },
+    },
+
+    {
+        name : 'URLs',
+        schema : schemaForUrls,
+        params : {
+            url1 : 'http://chilts.org/',
+            url2 : 'http://chilts.org',
+            url3 : 'http://chilts.org/blog/',
+            url4 : 'https://google.com/',
+            url5 : 'ftp://example.net/',
+        },
+        test : function(t, err) {
+            console.log('----------------------------------------');
+            console.log('err:', err);
+            console.log('----------------------------------------');
+            t.ok(_.isObject(err), "is an object");
+            t.ok( _.isUndefined(err.url1), "url1 passes");
+            t.ok( _.isUndefined(err.url2), "url2 passes");
+            t.ok( _.isUndefined(err.url3), "url3 passes");
+            t.ok( _.isUndefined(err.url4), "url4 passes");
+            t.ok(!_.isUndefined(err.url5), "url5 fails");
+
+            t.ok(err.url5, "url5 should be a URL and start with http:// or https://");
 
             t.end();
         },

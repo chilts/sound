@@ -65,6 +65,14 @@ Constraint.prototype.maxLen = function(len) {
     return this;
 };
 
+Constraint.prototype.isUrl = function(len) {
+    console.log('Pushing isUrl=' + len + ' onto the rules');
+    this.rules.push({
+        type : 'isUrl',
+    });
+    return this;
+};
+
 // --------------------------------------------------------------------------------------------------------------------
 
 var sound = {};
@@ -154,7 +162,7 @@ sound.validateParam = function(name, value, constraint) {
         console.log(i + ') ', r);
 
         // check all of the different constraints
-        if ( r.type === 'require' ) {
+        if ( r.type === 'required' ) {
             if ( _.isUndefined(value) || _.isNull(value) ) {
                 return name + ' is required';
             }
@@ -182,6 +190,18 @@ sound.validateParam = function(name, value, constraint) {
                 console.log('*** dodgy');
                 return name + ' should be at most ' + r.len + ' characters';
             }
+        }
+        else if ( r.type === 'isUrl' ) {
+            console.log('Checking URL against a regex');
+            var m = value.match(/^https?:\/\/\w[\w-]*(\.[\w+])+/);
+            console.log(m);
+            if ( !value.match(/^https?:\/\/\w[\w-]*(\.[\w+])+/) ) {
+                console.log('Checking URL against a regex');
+                return name + ' should be a URL and start with http:// or https://';
+            }
+        }
+        else {
+            throw new Error('Program Error: unknown type ' + r.type);
         }
     }
 
