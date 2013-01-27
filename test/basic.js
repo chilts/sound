@@ -160,6 +160,7 @@ var tests = [
             url3 : 'http://chilts.org/blog/',
             url4 : 'https://google.com/',
             url5 : 'ftp://example.net/',
+            url6 : 'http://localhost/',
         },
         test : function(t, err) {
             console.log('----------------------------------------');
@@ -171,6 +172,7 @@ var tests = [
             t.ok( _.isUndefined(err.url3), "url3 passes");
             t.ok( _.isUndefined(err.url4), "url4 passes");
             t.ok(!_.isUndefined(err.url5), "url5 fails");
+            t.ok( _.isUndefined(err.url6), "url6 passes");
 
             t.ok(err.url5, "url5 should be a URL and start with http:// or https://");
 
