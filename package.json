@@ -1,0 +1,39 @@
+{
+    "name"         : "sound",
+    "description"  : "Make sure your data is sound! Validation library for Node.js.",
+    "version"      : "0.1.0",
+    "main"         : "sound.js",
+    "author"       : {
+        "name"  : "Andrew Chilton",
+        "email" : "chilts@appsattic.com",
+        "url"   : "http://www.chilts.org/"
+    },
+    "homepage"     : "https://github.com/appsattic/sound",
+    "contributors" : [],
+    "dependencies" : {
+        "underscore" : "~1.4.x"
+    },
+    "devDependencies": {
+        "tape" : ">= 0.2.x"
+    },
+    "main"         : "sound.js",
+    "engines"      : {
+        "node" : ">= 0.6.0"
+    },
+    "repository"   : {
+        "type" : "git",
+        "url"  : "git://github.com/appsattic/sound.git"
+    },
+   "bugs" : {
+        "url"  : "http://github.com/appsattic/sound/issues",
+        "mail" : "chilts@appsattic.com"
+    },
+    "licenses" : [{
+        "type" : "MIT",
+        "url"  : "http://appsattic.mit-license.org/2013/"
+    }],
+    "keywords" : [ "validate", "validation", "input", "params" ],
+    "scripts"  : {
+        "test" : "tap test/*.js"
+    }
+}
