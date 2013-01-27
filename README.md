@@ -20,12 +20,6 @@ var params = {
 };
 
 var err = sound.validate(params, schema);
-if (err) {
-   console.log(err);
-}
-else {
-   // all fine, now do something with params
-}
 ```
 
 If anything fails validation, then err will be an object with keys set to each field for each error. Only one error per
@@ -35,25 +29,28 @@ If no failures are detected, err is 'undefined' rather than '{}' since that is t
 
 ```
 var err = sound.validate(params1, schema);
-if (err)
+if (err) {
    // something failed, check the keys in err.*
    ...
-else
+}
+else {
    // all ok
    ...
+}
 ```
 
 An error object may look like:
 
 ```
 {
+    password: 'Password should be at least 8 characters'
     logins: 'Logins should be of type integer',
     pi: 'PI should be of type float',
     date: 'Date should be of type date'
 }
 ```
 
-## Validation Libraries ##
+## Other Validation Libraries ##
 
 There are other validation libraries out there, but they all give me errors which are arrays. To me, this is useless. I
 don't want to list all of the errors at the top of a form, nor do I know which order those errors are in if I want to
