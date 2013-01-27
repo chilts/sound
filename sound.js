@@ -102,15 +102,18 @@ sound.date = function(name) {
 sound.validate = function(params, schema) {
     // go through each property
     var error = {};
+    var ok = true;
     var keys = Object.keys(schema);
     keys.forEach(function(key, i) {
         console.log('Checking ' + key);
         var err = sound.validateParam(schema[key].name || key, params[key], schema[key]);
         if (err) {
+            ok = false;
             error[key] = err;
         }
     });
-    return error;
+
+    return ok ? undefined : error;
 };
 
 sound.validateParam = function(name, value, constraint) {
@@ -193,9 +196,7 @@ sound.validateParam = function(name, value, constraint) {
         }
         else if ( r.type === 'isUrl' ) {
             console.log('Checking URL against a regex');
-            var m = value.match(/^https?:\/\/\w[\w-]*(\.[\w+])+/);
-            console.log(m);
-            if ( !value.match(/^https?:\/\/\w[\w-]*(\.[\w+])+/) ) {
+            if ( !value.match(/^https?:\/\/\w[\w-]*(\.[\w]+)+/) ) {
                 console.log('Checking URL against a regex');
                 return name + ' should be a URL and start with http:// or https://';
             }

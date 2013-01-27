@@ -34,6 +34,11 @@ var schemaForUrls = {
     url5 : sound.string().required().isUrl(),
 };
 
+var schemaForUrlShortener = {
+    title : sound.string().required(),
+    url   : sound.string().required().isUrl(),
+};
+
 var tests = [
 
     {
@@ -57,14 +62,8 @@ var tests = [
             date     : new Date(),
         },
         test : function(t, err) {
-            t.ok(_.isObject(err), "is an object");
-            t.ok(_.isUndefined(err.username), "string passes");
-            t.ok(_.isUndefined(err.password), "string passes");
-            t.ok(_.isUndefined(err.logins),   "integer passes");
-            t.ok(_.isUndefined(err.pi),       "float passes");
-            t.ok(_.isUndefined(err.isAdmin),  "boolean (false) passes");
-            t.ok(_.isUndefined(err.isHuman),  "boolean (true) passes");
-            t.ok(_.isUndefined(err.date),     "date passes");
+            t.ok(!_.isObject(err), "is not an object");
+            t.ok(_.isUndefined(err), "is undefined");
             t.end();
         },
     },
@@ -173,12 +172,35 @@ var tests = [
         },
     },
 
+    {
+        name : 'Url Shortener',
+        schema : schemaForUrlShortener,
+        params : {
+            title : 'chilts.org',
+            url   : 'http://chilts.org/',
+        },
+        test : function(t, err) {
+            console.log('----------------------------------------');
+            console.log('err:', err);
+            console.log('----------------------------------------');
+            t.ok(!_.isObject(err), "is not an object");
+            t.ok(_.isUndefined(err), "is undefined");
+
+            t.end();
+        },
+    },
+
 ];
 
+console.log('1');
 tests.forEach(function(v, i) {
+    console.log('NEW TEST');
     test(v.name, function(t) {
+        console.log('INSIDE TEST');
         var err = sound.validate(v.params, v.schema);
         v.test(t, err);
     });
+    console.log('END OF TEST');
 });
+console.log('ENDED');
 
