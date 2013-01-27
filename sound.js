@@ -19,8 +19,8 @@ var Constraint = function(type) {
     return this;
 };
 
-Constraint.prototype.name = function(name) {
-    this.name = name;
+Constraint.prototype.name = function(_name) {
+    this._name = _name;
     return this;
 };
 
@@ -106,7 +106,9 @@ sound.validate = function(params, schema) {
     var keys = Object.keys(schema);
     keys.forEach(function(key, i) {
         console.log('Checking ' + key);
-        var err = sound.validateParam(schema[key].name || key, params[key], schema[key]);
+        console.log('* ' + schema[key]._name);
+        console.log('* ' + key);
+        var err = sound.validateParam(schema[key]._name || key, params[key], schema[key]);
         if (err) {
             ok = false;
             error[key] = err;
