@@ -39,6 +39,12 @@ var schemaForUrlShortener = {
     url   : sound.string().required().isUrl(),
 };
 
+var schemaForMatches = {
+    username : sound.string().required(),
+    favColour1 : sound.string().matches(/^(red|green|blue)$/),
+    favColour2 : sound.string().matches(/^(red|green|blue)$/),
+};
+
 var tests = [
 
     {
@@ -185,6 +191,30 @@ var tests = [
             console.log('----------------------------------------');
             t.ok(!_.isObject(err), "is not an object");
             t.ok(_.isUndefined(err), "is undefined");
+
+            t.end();
+        },
+    },
+
+    {
+        name : 'Test for .matches()',
+        schema : schemaForMatches,
+        params : {
+            username : 'chilts',
+            favColour1 : 'red',
+            favColour2 : 'purple',
+        },
+        test : function(t, err) {
+            console.log('----------------------------------------');
+            console.log('err:', err);
+            console.log('----------------------------------------');
+            t.ok(_.isObject(err), "is an object");
+
+            t.ok( _.isUndefined(err.username), "username is correct");
+            t.ok( _.isUndefined(err.favColour1), "red is ok");
+            t.ok(!_.isUndefined(err.favColour2), "purple is not ok");
+
+            t.ok(err.favColour2, "favColour2 does not validate");
 
             t.end();
         },

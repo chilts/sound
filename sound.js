@@ -65,8 +65,15 @@ Constraint.prototype.maxLen = function(len) {
     return this;
 };
 
-Constraint.prototype.isUrl = function(len) {
-    console.log('Pushing isUrl=' + len + ' onto the rules');
+Constraint.prototype.matches = function(regex) {
+    this.rules.push({
+        type : 'matches',
+        regex : regex,
+    });
+    return this;
+};
+
+Constraint.prototype.isUrl = function() {
     this.rules.push({
         type : 'isUrl',
     });
@@ -194,6 +201,15 @@ sound.validateParam = function(name, value, constraint) {
             if ( value.length > r.len ) {
                 console.log('*** dodgy');
                 return name + ' should be at most ' + r.len + ' characters';
+            }
+        }
+        else if ( r.type === 'matches' ) {
+            console.log('Checking value ' + value + ' against regex');
+            var m = value.match(r.regex);
+            console.log('m:', m);
+            if ( !value.match(r.regex) ) {
+                console.log('Fails regex for name=' + name);
+                return name + ' does not validate';
             }
         }
         else if ( r.type === 'isUrl' ) {
