@@ -68,9 +68,9 @@ var tests = [
             isHuman  : true,
             date     : new Date(),
         },
-        test : function(t, err) {
+        test : function(t, err, res) {
             t.ok(!_.isObject(err), "is not an object");
-            t.ok(_.isUndefined(err), "is undefined");
+            t.ok(_.isNull(err), "is null");
             t.end();
         },
     },
@@ -89,7 +89,7 @@ var tests = [
             username8 : 'ok-here',
             username9 : 'too-long-here',
         },
-        test : function(t, err) {
+        test : function(t, err, res) {
             t.ok(_.isObject(err), "is an object");
             t.ok( _.isUndefined(err.username1), "string passes");
             t.ok( _.isUndefined(err.username2), "string passes");
@@ -126,7 +126,7 @@ var tests = [
             int8 : 5,
             int9 : 9,
         },
-        test : function(t, err) {
+        test : function(t, err, res) {
             console.log('----------------------------------------');
             console.log('err:', err);
             console.log('----------------------------------------');
@@ -164,7 +164,7 @@ var tests = [
             url6 : 'http://localhost/',
             url6 : 'http://localhost.localdomain:8000/',
         },
-        test : function(t, err) {
+        test : function(t, err, res) {
             console.log('----------------------------------------');
             console.log('err:', err);
             console.log('----------------------------------------');
@@ -190,12 +190,12 @@ var tests = [
             title : 'chilts.org',
             url   : 'http://chilts.org/',
         },
-        test : function(t, err) {
+        test : function(t, err, res) {
             console.log('----------------------------------------');
             console.log('err:', err);
             console.log('----------------------------------------');
             t.ok(!_.isObject(err), "is not an object");
-            t.ok(_.isUndefined(err), "is undefined");
+            t.ok(_.isNull(err), "is null");
 
             t.end();
         },
@@ -209,7 +209,7 @@ var tests = [
             favColour1 : 'red',
             favColour2 : 'purple',
         },
-        test : function(t, err) {
+        test : function(t, err, res) {
             console.log('----------------------------------------');
             console.log('err:', err);
             console.log('----------------------------------------');
@@ -232,8 +232,9 @@ tests.forEach(function(v, i) {
     console.log('NEW TEST');
     test(v.name, function(t) {
         console.log('INSIDE TEST');
-        var err = sound.validate(v.params, v.schema);
-        v.test(t, err);
+        var err = sound.validate(v.params, v.schema, function(err, res) {
+            v.test(t, err, res);
+        });
     });
     console.log('END OF TEST');
 });

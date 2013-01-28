@@ -106,10 +106,15 @@ sound.date = function(name) {
 
 // --------------------------------------------------------------------------------------------------------------------
 
-sound.validate = function(params, schema) {
-    // go through each property
+sound.validate = function(params, schema, callback) {
+    var res = {};
     var error = {};
     var ok = true;
+
+    var res = _.extend({}, params);
+    console.log('1 = res:', res);
+
+    // go through each property
     var keys = Object.keys(schema);
     keys.forEach(function(key, i) {
         console.log('Checking ' + key);
@@ -122,7 +127,8 @@ sound.validate = function(params, schema) {
         }
     });
 
-    return ok ? undefined : error;
+    console.log('2 = res:', res);
+    callback(ok ? null : error, ok ? res : null);
 };
 
 sound.validateParam = function(name, value, constraint) {
