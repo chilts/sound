@@ -110,6 +110,13 @@ Constraint.prototype.replace = function(a, b) {
     return this;
 };
 
+Constraint.prototype.toInteger = function() {
+    this.rules.push({
+        type : 'toInteger',
+    });
+    return this;
+};
+
 // --------------------------------------------------------------------------------------------------------------------
 
 var sound = {};
@@ -287,6 +294,11 @@ sound.validateParam = function(name, value, constraint, callback) {
         else if ( r.type === 'replace' ) {
             console.log('Replacing a with b in the value');
             value = value.replace(r.a, r.b);
+            console.log('-> newValue=[' + value + ']');
+        }
+        else if ( r.type === 'toInteger' ) {
+            console.log('Changing the type to an integer');
+            value = parseInt(value, 10);
             console.log('-> newValue=[' + value + ']');
         }
         else {
