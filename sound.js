@@ -214,7 +214,10 @@ sound.validateParam = function(name, value, constraint) {
         }
         else if ( r.type === 'isUrl' ) {
             console.log('Checking URL against a regex');
-            if ( !value.match(/^https?:\/\/\w[\w-]*(\.[\w]+)+/) ) {
+            // ToDo: http://someweblog.com/url-regular-expression-javascript-link-shortener/
+            // From: http://stackoverflow.com/questions/8188645/javascript-regex-to-match-a-url-in-a-field-of-text
+            // * (http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?
+            if ( !value.match(/^https?:\/\/[A-Za-z0-9][A-Za-z0-9-]*(\.[A-Za-z]+)+(:\d+)?(\/\S*)?$/) ) {
                 console.log('Checking URL against a regex');
                 return name + ' should be a URL and start with http:// or https://';
             }

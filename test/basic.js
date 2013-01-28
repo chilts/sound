@@ -32,6 +32,7 @@ var schemaForUrls = {
     url3 : sound.string().required().isUrl(),
     url4 : sound.string().required().isUrl(),
     url5 : sound.string().required().isUrl(),
+    url6 : sound.string().required().isUrl(),
 };
 
 var schemaForUrlShortener = {
@@ -161,6 +162,7 @@ var tests = [
             url4 : 'https://google.com/',
             url5 : 'ftp://example.net/',
             url6 : 'http://localhost/',
+            url6 : 'http://localhost.localdomain:8000/',
         },
         test : function(t, err) {
             console.log('----------------------------------------');
@@ -173,6 +175,7 @@ var tests = [
             t.ok( _.isUndefined(err.url4), "url4 passes");
             t.ok(!_.isUndefined(err.url5), "url5 fails");
             t.ok( _.isUndefined(err.url6), "url6 passes");
+            t.ok( _.isUndefined(err.url7), "url7 passes");
 
             t.ok(err.url5, "url5 should be a URL and start with http:// or https://");
 
