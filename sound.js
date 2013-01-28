@@ -80,6 +80,36 @@ Constraint.prototype.isUrl = function() {
     return this;
 };
 
+Constraint.prototype.trim = function() {
+    this.rules.push({
+        type : 'trim',
+    });
+    return this;
+};
+
+Constraint.prototype.lowercase = function() {
+    this.rules.push({
+        type : 'lowercase',
+    });
+    return this;
+};
+
+Constraint.prototype.uppercase = function() {
+    this.rules.push({
+        type : 'uppercase',
+    });
+    return this;
+};
+
+Constraint.prototype.replace = function(a, b) {
+    this.rules.push({
+        type : 'replace',
+        a : a,
+        b : b,
+    });
+    return this;
+};
+
 // --------------------------------------------------------------------------------------------------------------------
 
 var sound = {};
@@ -117,39 +147,47 @@ sound.validate = function(params, schema, callback) {
     // go through each property
     var keys = Object.keys(schema);
     keys.forEach(function(key, i) {
+        console.log('===============================================================================');
         console.log('Checking ' + key);
-        console.log('* ' + schema[key]._name);
-        console.log('* ' + key);
-        var err = sound.validateParam(schema[key]._name || key, params[key], schema[key]);
-        if (err) {
-            ok = false;
-            error[key] = err;
-        }
+        console.log('* Name=' + schema[key]._name);
+        console.log('* key=' + key);
+
+        console.log('* value=[' + res[key] + ']');
+        sound.validateParam(schema[key]._name || key, res[key], schema[key], function(err, newValue) {
+            console.log('* err:', err);
+            if (err) {
+                ok = false;
+                error[key] = err;
+            }
+            res[key] = newValue;
+            console.log('cumulative errors:', error);
+            console.log('cumulative result:', res);
+        });
+
     });
 
-    console.log('2 = res:', res);
-    callback(ok ? null : error, ok ? res : null);
+    console.log('=== END ========================================================================');
+
+    console.log('Final err:', error);
+    console.log('Final res:', res);
+    callback(ok ? null : error, res);
 };
 
-sound.validateParam = function(name, value, constraint) {
-    console.log('--- ' + name + ' ---');
-    console.log('--- ' + value + ' ---');
+sound.validateParam = function(name, value, constraint, callback) {
+    console.log('=== Validating : ' + name + ' ===');
+    console.log('value=[' + value + ']');
     console.log(constraint);
-    console.log('----------------');
+
     // firstly check the type
     switch ( constraint.type ) {
     case 'string':
         if ( !_.isString(value) ) {
-            return name + ' should be of type ' + constraint.type;
+            return callback(name + ' should be of type ' + constraint.type, value);
         }
         break;
     case 'integer':
-        console.log('here1:' + value);
-        console.log('here2:' + parseInt(value, 10));
-        console.log('here3:' + (parseInt(value, 10) === value));
         if ( parseInt(value, 10) !== value ) {
-            console.log('!!!!!!! WTF AM I DOING HERE!!!!!!!!');
-            return name + ' should be of type ' + constraint.type;
+            return callback(name + ' should be of type ' + constraint.type, value);
         }
         else {
             console.log(name + 'integer is valid');
@@ -157,17 +195,17 @@ sound.validateParam = function(name, value, constraint) {
         break;
     case 'float':
         if ( typeof value !== 'number' ) {
-            return name + ' should be of type ' + constraint.type;
+            return callback(name + ' should be of type ' + constraint.type, value);
         }
         break;
     case 'boolean':
         if ( !_.isBoolean(value) ) {
-            return name + ' should be of type ' + constraint.type;
+            return callback(name + ' should be of type ' + constraint.type, value);
         }
         break;
     case 'date':
         if ( !_.isDate(value) ) {
-            return name + ' should be of type ' + constraint.type;
+            return callback(name + ' should be of type ' + constraint.type, value);
         }
         break;
     }
@@ -182,22 +220,25 @@ sound.validateParam = function(name, value, constraint) {
         // check all of the different constraints
         if ( r.type === 'required' ) {
             if ( _.isUndefined(value) || _.isNull(value) ) {
-                return name + ' is required';
+                return callback(name + ' is required', value);
+            }
+            if ( value.length === 0 ) {
+                return callback(name + ' is required', value);
             }
         }
         else if ( r.type === 'min' ) {
             if ( value < r.value ) {
-                return name + ' should be at least ' + r.value;
+                return callback(name + ' should be at least ' + r.value, value);
             }
         }
         else if ( r.type === 'max' ) {
             if ( value > r.value ) {
-                return name + ' should be at most ' + r.value;
+                return callback(name + ' should be at most ' + r.value, value);
             }
         }
         else if ( r.type === 'minLen' ) {
             if ( value.length < r.len ) {
-                return name + ' should be at least ' + r.len + ' characters';
+                return callback(name + ' should be at least ' + r.len + ' characters', value);
             }
         }
         else if ( r.type === 'maxLen' ) {
@@ -206,7 +247,7 @@ sound.validateParam = function(name, value, constraint) {
             console.log('*** r.len=' + r.len);
             if ( value.length > r.len ) {
                 console.log('*** dodgy');
-                return name + ' should be at most ' + r.len + ' characters';
+                return callback(name + ' should be at most ' + r.len + ' characters', value);
             }
         }
         else if ( r.type === 'matches' ) {
@@ -215,7 +256,7 @@ sound.validateParam = function(name, value, constraint) {
             console.log('m:', m);
             if ( !value.match(r.regex) ) {
                 console.log('Fails regex for name=' + name);
-                return name + ' does not validate';
+                return callback(name + ' does not validate', value);
             }
         }
         else if ( r.type === 'isUrl' ) {
@@ -225,8 +266,28 @@ sound.validateParam = function(name, value, constraint) {
             // * (http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?
             if ( !value.match(/^https?:\/\/[A-Za-z0-9][A-Za-z0-9-]*(\.[A-Za-z]+)+(:\d+)?(\/\S*)?$/) ) {
                 console.log('Checking URL against a regex');
-                return name + ' should be a URL and start with http:// or https://';
+                return callback(name + ' should be a URL and start with http:// or https://', value);
             }
+        }
+        else if ( r.type === 'trim' ) {
+            console.log('Trimming the value');
+            value = value.replace(/^\s+|\s+$/g,'')
+            console.log('-> newValue=[' + value + ']');
+        }
+        else if ( r.type === 'lowercase' ) {
+            console.log('Lowercasing the value');
+            value = value.toLowerCase();
+            console.log('-> newValue=[' + value + ']');
+        }
+        else if ( r.type === 'uppercase' ) {
+            console.log('Uppercasing the value');
+            value = value.toUpperCase();
+            console.log('-> newValue=[' + value + ']');
+        }
+        else if ( r.type === 'replace' ) {
+            console.log('Replacing a with b in the value');
+            value = value.replace(r.a, r.b);
+            console.log('-> newValue=[' + value + ']');
         }
         else {
             throw new Error('Program Error: unknown type ' + r.type);
@@ -234,7 +295,7 @@ sound.validateParam = function(name, value, constraint) {
     }
 
     // no error, so just return nothing
-    return;
+    callback(null, value);
 };
 
 // --------------------------------------------------------------------------------------------------------------------
