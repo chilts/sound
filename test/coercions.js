@@ -3,11 +3,11 @@ var test = require("tape");
 var sound = require('../sound.js');
 
 var coercionsForStrings = {
-    percentage0 : sound.string().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage1 : sound.string().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage2 : sound.string().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage3 : sound.string().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage4 : sound.string().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
+    percentage0 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
+    percentage1 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
+    percentage2 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
+    percentage3 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
+    percentage4 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
 };
 
 var tests = [

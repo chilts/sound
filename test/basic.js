@@ -3,47 +3,47 @@ var test = require("tape");
 var sound = require('../sound.js');
 
 var schemaForStrings = {
-    username1 : sound.string().required().name('Username1'),
-    username2 : sound.string().required().name('Username2').minLen(3),
-    username3 : sound.string().required().name('Username3').minLen(3),
-    username4 : sound.string().required().name('Username4').maxLen(8),
-    username5 : sound.string().required().name('Username5').maxLen(8),
-    username6 : sound.string().required().name('Username6').minLen(3).maxLen(8),
-    username7 : sound.string().required().name('Username7').minLen(3).maxLen(8),
-    username8 : sound.string().required().name('Username8').maxLen(8).minLen(3),
-    username9 : sound.string().required().name('Username9').maxLen(8).minLen(3),
+    username1 : sound().isString().required().name('Username1'),
+    username2 : sound().isString().required().name('Username2').minLen(3),
+    username3 : sound().isString().required().name('Username3').minLen(3),
+    username4 : sound().isString().required().name('Username4').maxLen(8),
+    username5 : sound().isString().required().name('Username5').maxLen(8),
+    username6 : sound().isString().required().name('Username6').minLen(3).maxLen(8),
+    username7 : sound().isString().required().name('Username7').minLen(3).maxLen(8),
+    username8 : sound().isString().required().name('Username8').maxLen(8).minLen(3),
+    username9 : sound().isString().required().name('Username9').maxLen(8).minLen(3),
 };
 
 var schemaForIntegers = {
-    int1 : sound.integer().required().name('Int1'),
-    int2 : sound.integer().required().name('Int2').min(3),
-    int3 : sound.integer().required().name('Int3').min(3),
-    int4 : sound.integer().required().name('Int4').max(8),
-    int5 : sound.integer().required().name('Int5').max(8),
-    int6 : sound.integer().required().name('Int6').min(3).max(8),
-    int7 : sound.integer().required().name('Int7').min(3).max(8),
-    int8 : sound.integer().required().name('Int8').max(8).min(3),
-    int9 : sound.integer().required().name('Int9').max(8).min(3),
+    int1 : sound().isInteger().required().name('Int1'),
+    int2 : sound().isInteger().required().name('Int2').min(3),
+    int3 : sound().isInteger().required().name('Int3').min(3),
+    int4 : sound().isInteger().required().name('Int4').max(8),
+    int5 : sound().isInteger().required().name('Int5').max(8),
+    int6 : sound().isInteger().required().name('Int6').min(3).max(8),
+    int7 : sound().isInteger().required().name('Int7').min(3).max(8),
+    int8 : sound().isInteger().required().name('Int8').max(8).min(3),
+    int9 : sound().isInteger().required().name('Int9').max(8).min(3),
 };
 
 var schemaForUrls = {
-    url1 : sound.string().required().isUrl(),
-    url2 : sound.string().required().isUrl(),
-    url3 : sound.string().required().isUrl(),
-    url4 : sound.string().required().isUrl(),
-    url5 : sound.string().required().isUrl(),
-    url6 : sound.string().required().isUrl(),
+    url1 : sound().isString().required().isUrl(),
+    url2 : sound().isString().required().isUrl(),
+    url3 : sound().isString().required().isUrl(),
+    url4 : sound().isString().required().isUrl(),
+    url5 : sound().isString().required().isUrl(),
+    url6 : sound().isString().required().isUrl(),
 };
 
 var schemaForUrlShortener = {
-    title : sound.string().required(),
-    url   : sound.string().required().isUrl(),
+    title : sound().isString().required(),
+    url   : sound().isString().required().isUrl(),
 };
 
 var schemaForMatches = {
-    username : sound.string().required(),
-    favColour1 : sound.string().matches(/^(red|green|blue)$/),
-    favColour2 : sound.string().matches(/^(red|green|blue)$/),
+    username : sound().isString().required(),
+    favColour1 : sound().isString().matches(/^(red|green|blue)$/),
+    favColour2 : sound().isString().matches(/^(red|green|blue)$/),
 };
 
 var tests = [
@@ -51,13 +51,13 @@ var tests = [
     {
         name : 'Validate simple types (required)',
         schema : {
-            username : sound.string().name('Username').required(),
-            password : sound.string().name('Password').required(),
-            logins   : sound.integer().name('Logins').required(),
-            pi       : sound.float().name('PI').required(),
-            isAdmin  : sound.boolean().name('Is Admin').required(),
-            isHuman  : sound.boolean().name('Is Human').required(),
-            date     : sound.date().name('Date').required(),
+            username : sound().isString().name('Username').required(),
+            password : sound().isString().name('Password').required(),
+            logins   : sound().isInteger().name('Logins').required(),
+            pi       : sound().isFloat().name('PI').required(),
+            isAdmin  : sound().isBoolean().name('Is Admin').required(),
+            isHuman  : sound().isBoolean().name('Is Human').required(),
+            date     : sound().isDate().name('Date').required(),
         },
         params : {
             username : 'andy',

@@ -13,8 +13,10 @@ var _ = require('underscore');
 
 // --------------------------------------------------------------------------------------------------------------------
 
-var Constraint = function(type) {
-    this.type = type;
+var Constraint = function(name) {
+    this._name = name;
+    this._required = false;
+    this._requiredMsg = undefined;
     this.rules = [];
     return this;
 };
@@ -24,61 +26,112 @@ Constraint.prototype.name = function(_name) {
     return this;
 };
 
-Constraint.prototype.required = function() {
+Constraint.prototype.required = function(msg) {
+    this._required = true;
+    this._requiredMsg = msg;
+    return this;
+};
+
+// --------------------------------------------------------------------------------------------------------------------
+// validations
+
+Constraint.prototype.isString = function(msg) {
     this.rules.push({
-        type : 'required',
-        required : true,
+        type : 'isString',
+        msg  : msg
     });
     return this;
 };
 
-Constraint.prototype.min = function(value) {
+Constraint.prototype.isInteger = function(msg) {
     this.rules.push({
-        type : 'min',
+        type : 'isInteger',
+        msg  : msg
+    });
+    return this;
+};
+
+Constraint.prototype.isFloat = function(msg) {
+    this.rules.push({
+        type : 'isFloat',
+        msg  : msg
+    });
+    return this;
+};
+
+Constraint.prototype.isBoolean = function(msg) {
+    this.rules.push({
+        type : 'isBoolean',
+        msg  : msg
+    });
+    return this;
+};
+
+Constraint.prototype.isDate = function(msg) {
+    this.rules.push({
+        type : 'isDate',
+        msg  : msg
+    });
+    return this;
+};
+
+Constraint.prototype.min = function(value, msg) {
+    this.rules.push({
+        type  : 'min',
         value : value,
+        msg   : msg
+
     });
     return this;
 };
 
-Constraint.prototype.max = function(value) {
+Constraint.prototype.max = function(value, msg) {
     this.rules.push({
-        type : 'max',
+        type  : 'max',
         value : value,
+        msg   : msg
     });
     return this;
 };
 
-Constraint.prototype.minLen = function(len) {
+Constraint.prototype.minLen = function(len, msg) {
     this.rules.push({
         type : 'minLen',
-        len : len,
+        len  : len,
+        msg  : msg
     });
     return this;
 };
 
-Constraint.prototype.maxLen = function(len) {
+Constraint.prototype.maxLen = function(len, msg) {
     console.log('Pushing maxLen=' + len + ' onto the rules');
     this.rules.push({
         type : 'maxLen',
-        len : len,
+        len  : len,
+        msg  : msg
     });
     return this;
 };
 
-Constraint.prototype.matches = function(regex) {
+Constraint.prototype.matches = function(regex, msg) {
     this.rules.push({
-        type : 'matches',
+        type  : 'matches',
         regex : regex,
+        msg   : msg
     });
     return this;
 };
 
-Constraint.prototype.isUrl = function() {
+Constraint.prototype.isUrl = function(msg) {
     this.rules.push({
         type : 'isUrl',
+        msg  : msg
     });
     return this;
 };
+
+// --------------------------------------------------------------------------------------------------------------------
+// conversions
 
 Constraint.prototype.trim = function() {
     this.rules.push({
@@ -110,6 +163,9 @@ Constraint.prototype.replace = function(a, b) {
     return this;
 };
 
+// --------------------------------------------------------------------------------------------------------------------
+// coercions
+
 Constraint.prototype.toInteger = function() {
     this.rules.push({
         type : 'toInteger',
@@ -118,32 +174,14 @@ Constraint.prototype.toInteger = function() {
 };
 
 // --------------------------------------------------------------------------------------------------------------------
+// sound itself (for the constraints) and it's only function for validation
 
-var sound = {};
-
-sound.string = function(name) {
-    return new Constraint('string');
+var sound = function(name) {
+    return new Constraint(name);
 };
-
-sound.integer = function(name) {
-    return new Constraint('integer');
-};
-
-sound.float = function(name) {
-    return new Constraint('float');
-};
-
-sound.boolean = function(name) {
-    return new Constraint('boolean');
-};
-
-sound.date = function(name) {
-    return new Constraint('date');
-};
-
-// --------------------------------------------------------------------------------------------------------------------
 
 sound.validate = function(params, schema, callback) {
+
     var res = {};
     var error = {};
     var ok = true;
@@ -151,7 +189,7 @@ sound.validate = function(params, schema, callback) {
     var res = _.extend({}, params);
     console.log('1 = res:', res);
 
-    // go through each property
+    // go through each property of the schema (we ignore all others)
     var keys = Object.keys(schema);
     keys.forEach(function(key, i) {
         console.log('===============================================================================');
@@ -159,8 +197,10 @@ sound.validate = function(params, schema, callback) {
         console.log('* Name=' + schema[key]._name);
         console.log('* key=' + key);
 
+        // validate the param against it's own constraints in the schema
+        // Note: sound.validateParam(name, value, schema, fn)
         console.log('* value=[' + res[key] + ']');
-        sound.validateParam(schema[key]._name || key, res[key], schema[key], function(err, newValue) {
+        validateParam(schema[key]._name || key, res[key], schema[key], function(err, newValue) {
             console.log('* err:', err);
             if (err) {
                 ok = false;
@@ -180,42 +220,21 @@ sound.validate = function(params, schema, callback) {
     callback(ok ? null : error, res);
 };
 
-sound.validateParam = function(name, value, constraint, callback) {
+var validateParam = function(name, value, constraint, done) {
     console.log('=== Validating : ' + name + ' ===');
     console.log('value=[' + value + ']');
     console.log(constraint);
 
-    // firstly check the type
-    switch ( constraint.type ) {
-    case 'string':
-        if ( !_.isString(value) ) {
-            return callback(name + ' should be of type ' + constraint.type, value);
-        }
-        break;
-    case 'integer':
-        if ( parseInt(value, 10) !== value ) {
-            return callback(name + ' should be of type ' + constraint.type, value);
+    // first thing to do is see if this param is required ... if not, and it's undefined then we get out of here
+    if ( _.isUndefined(value) || _.isNull(value) ) {
+        if ( constraint._required ) {
+            return done(constraint._requiredMsg || name + ' is required', value);
         }
         else {
-            console.log(name + 'integer is valid');
+            return done();
         }
-        break;
-    case 'float':
-        if ( typeof value !== 'number' ) {
-            return callback(name + ' should be of type ' + constraint.type, value);
-        }
-        break;
-    case 'boolean':
-        if ( !_.isBoolean(value) ) {
-            return callback(name + ' should be of type ' + constraint.type, value);
-        }
-        break;
-    case 'date':
-        if ( !_.isDate(value) ) {
-            return callback(name + ' should be of type ' + constraint.type, value);
-        }
-        break;
     }
+    // else, we have a value, so keep checking things
 
     var err;
 
@@ -225,27 +244,44 @@ sound.validateParam = function(name, value, constraint, callback) {
         console.log(i + ') ', r);
 
         // check all of the different constraints
-        if ( r.type === 'required' ) {
-            if ( _.isUndefined(value) || _.isNull(value) ) {
-                return callback(name + ' is required', value);
+        if ( r.type === 'isString' ) {
+            if ( !_.isString(value) ) {
+                return done(r.msg || name + ' should be a string', value);
             }
-            if ( value.length === 0 ) {
-                return callback(name + ' is required', value);
+        }
+        else if ( r.type === 'isInteger' ) {
+            if ( parseInt(value, 10) !== value ) {
+                return done(r.msg || name + ' should be an integer', value);
+            }
+        }
+        else if ( r.type === 'isFloat' ) {
+            if ( typeof value !== 'number' ) {
+                return done(r.msg || name + ' should be a float', value);
+            }
+        }
+        else if ( r.type === 'isBoolean' ) {
+            if ( !_.isBoolean(value) ) {
+                return done(r.msg || name + ' should be a boolean', value);
+            }
+        }
+        else if ( r.type === 'isDate' ) {
+            if ( !_.isDate(value) ) {
+                return done(r.msg || name + ' should be a date', value);
             }
         }
         else if ( r.type === 'min' ) {
             if ( value < r.value ) {
-                return callback(name + ' should be at least ' + r.value, value);
+                return done(r.msg || name + ' should be at least ' + r.value, value);
             }
         }
         else if ( r.type === 'max' ) {
             if ( value > r.value ) {
-                return callback(name + ' should be at most ' + r.value, value);
+                return done(r.msg || name + ' should be at most ' + r.value, value);
             }
         }
         else if ( r.type === 'minLen' ) {
             if ( value.length < r.len ) {
-                return callback(name + ' should be at least ' + r.len + ' characters', value);
+                return done(r.msg || name + ' should be at least ' + r.len + ' characters', value);
             }
         }
         else if ( r.type === 'maxLen' ) {
@@ -254,7 +290,7 @@ sound.validateParam = function(name, value, constraint, callback) {
             console.log('*** r.len=' + r.len);
             if ( value.length > r.len ) {
                 console.log('*** dodgy');
-                return callback(name + ' should be at most ' + r.len + ' characters', value);
+                return done(r.msg || name + ' should be at most ' + r.len + ' characters', value);
             }
         }
         else if ( r.type === 'matches' ) {
@@ -263,7 +299,7 @@ sound.validateParam = function(name, value, constraint, callback) {
             console.log('m:', m);
             if ( !value.match(r.regex) ) {
                 console.log('Fails regex for name=' + name);
-                return callback(name + ' does not validate', value);
+                return done(r.msg || name + ' does not validate', value);
             }
         }
         else if ( r.type === 'isUrl' ) {
@@ -273,7 +309,7 @@ sound.validateParam = function(name, value, constraint, callback) {
             // * (http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?
             if ( !value.match(/^https?:\/\/[A-Za-z0-9][A-Za-z0-9-]*(\.[A-Za-z]+)+(:\d+)?(\/\S*)?$/) ) {
                 console.log('Checking URL against a regex');
-                return callback(name + ' should be a URL and start with http:// or https://', value);
+                return done(r.msg || name + ' should be a URL and start with http:// or https://', value);
             }
         }
         else if ( r.type === 'trim' ) {
@@ -307,11 +343,11 @@ sound.validateParam = function(name, value, constraint, callback) {
     }
 
     // no error, so just return nothing
-    callback(null, value);
+    done(null, value);
 };
 
 // --------------------------------------------------------------------------------------------------------------------
 
-module.exports = exports = sound;
+module.exports = sound;
 
 // --------------------------------------------------------------------------------------------------------------------

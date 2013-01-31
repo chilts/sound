@@ -3,17 +3,17 @@ var test = require("tape");
 var sound = require('../sound.js');
 
 var conversionsForStrings = {
-    username0 : sound.string().trim().required(),
-    username1 : sound.string().trim().required().name('Username1'),
-    username2 : sound.string().required().lowercase().name('Username2'),
-    username3 : sound.string().required().replace('_', '-').name('Username3'),
-    username4 : sound.string().trim().lowercase().required().replace(/_/g, '-').name('Username4'),
+    username0 : sound().isString().trim().required().minLen(4),
+    username1 : sound().isString().trim().required().name('Username1'),
+    username2 : sound().isString().required().lowercase().name('Username2'),
+    username3 : sound().isString().required().replace('_', '-').name('Username3'),
+    username4 : sound().isString().trim().lowercase().required().replace(/_/g, '-').name('Username4'),
 };
 
 var tests = [
 
     {
-        name : 'Some simple converstions on .string() types',
+        name : 'Some simple converstions on .isString() types',
         schema : conversionsForStrings,
         params : {
             username0 : '    ',
