@@ -11,6 +11,21 @@
 
 var _ = require('underscore');
 
+var valid = {
+    boolean : {
+        'true'  : true,
+        'false' : false,
+        't'     : true,
+        'f'     : false,
+        'yes'   : true,
+        'no'    : false,
+        'on'    : true,
+        'off'   : false,
+        '1'     : true,
+        '0'     : false,
+    },
+};
+
 // --------------------------------------------------------------------------------------------------------------------
 
 var Constraint = function(name) {
@@ -169,6 +184,13 @@ Constraint.prototype.replace = function(a, b) {
 Constraint.prototype.toInteger = function() {
     this.rules.push({
         type : 'toInteger',
+    });
+    return this;
+};
+
+Constraint.prototype.toBoolean = function() {
+    this.rules.push({
+        type : 'toBoolean',
     });
     return this;
 };
@@ -335,6 +357,29 @@ var validateParam = function(name, value, constraint, done) {
         else if ( r.type === 'toInteger' ) {
             console.log('Changing the type to an integer');
             value = parseInt(value, 10);
+            console.log('-> newValue=[' + value + ']');
+        }
+        else if ( r.type === 'toBoolean' ) {
+            console.log('Changing the type to an boolean');
+            if ( _.isString(value) ) {
+                console.log('GOT A STRING, CONVERTING TO BOOL -> ' + value.toLowerCase());
+                console.log('GOT A STRING, CONVERTING TO BOOL -> ' + valid.boolean[value.toLowerCase()]);
+                if ( value.toLowerCase() in valid.boolean ) {
+                    value = valid.boolean[value.toLowerCase()];
+                }
+                else {
+                    // do nothing, the user needs to validate their input prior to this conversion
+                    return done(r.msg || name + ' is not a recognised value when converting to boolean', value);
+                }
+            }
+            else if ( _.isNumber(value) ) {
+                console.log('[[[ right here for ' + value);
+                value = !(value == 0);
+            }
+            else {
+                // do nothing, the user needs to validate their input prior to this conversion
+                return done(r.msg || name + ' value should be a string or integer when converting to boolean', value);
+            }
             console.log('-> newValue=[' + value + ']');
         }
         else {
