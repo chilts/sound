@@ -5,10 +5,10 @@
     "main"         : "sound.js",
     "author"       : {
         "name"  : "Andrew Chilton",
-        "email" : "chilts@appsattic.com",
+        "email" : "andychilton@gmail.com",
         "url"   : "http://www.chilts.org/"
     },
-    "homepage"     : "https://github.com/appsattic/sound",
+    "homepage"     : "https://github.com/chilts/sound",
     "contributors" : [],
     "dependencies" : {
         "underscore" : "~1.4.x"
@@ -23,15 +23,15 @@
     },
     "repository"   : {
         "type" : "git",
-        "url"  : "git://github.com/appsattic/sound.git"
+        "url"  : "git://github.com/chilts/sound.git"
     },
    "bugs" : {
-        "url"  : "http://github.com/appsattic/sound/issues",
-        "mail" : "chilts@appsattic.com"
+        "url"  : "http://github.com/chilts/sound/issues",
+        "mail" : "andychilton@gmail.com"
     },
     "licenses" : [{
         "type" : "MIT",
-        "url"  : "http://appsattic.mit-license.org/2013/"
+        "url"  : "http://chilts.mit-license.org/2013/"
     }],
     "keywords" : [ "validate", "validation", "input", "params" ],
     "scripts"  : {

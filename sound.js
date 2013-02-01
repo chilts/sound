@@ -1,11 +1,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 //
-// sound.js - Make sure your data is sound! Validation library for Node.js.
+// sound.js - Make sure your data is sound! A validation library for Node.js.
 //
-// Copyright (c) 2013 AppsAttic Ltd - http://www.appsattic.com/
-// Written by Andrew Chilton <chilts@appsattic.com>
+// Copyright (c) 2013 Andrew Chilton
+// - http://www.chilts.org/blog/
+// - andychilton@gmail.com
 //
-// License: http://appsattic.mit-license.org/2013/
+// License: http://chilts.mit-license.org/2013/
 //
 // --------------------------------------------------------------------------------------------------------------------
 
