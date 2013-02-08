@@ -1,5 +1,7 @@
 sound.js - make sure your data is sound!
 
+[![Build Status](https://travis-ci.org/appsattic/sound.png?branch=master)](https://travis-ci.org/appsattic/sound)
+
 # Synopsis #
 
 ```
