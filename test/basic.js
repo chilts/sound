@@ -24,6 +24,10 @@ var schemaForIntegers = {
     int7 : sound().isInteger().required().name('Int7').min(3).max(8),
     int8 : sound().isInteger().required().name('Int8').max(8).min(3),
     int9 : sound().isInteger().required().name('Int9').max(8).min(3),
+    int10 : sound().isInteger().required().name('Int10').gt(3),
+    int11 : sound().isInteger().required().name('Int11').gt(3),
+    int12 : sound().isInteger().required().name('Int12').lt(8),
+    int13 : sound().isInteger().required().name('Int13').lt(8),
 };
 
 var schemaForUrls = {
@@ -125,6 +129,10 @@ var tests = [
             int7 : 2,
             int8 : 5,
             int9 : 9,
+            int10 : 4,
+            int11 : 3,
+            int12 : 7,
+            int13 : 8,
         },
         test : function(t, err, res) {
             console.log('----------------------------------------');
@@ -140,6 +148,10 @@ var tests = [
             t.ok(!_.isUndefined(err.int7), "integer passes");
             t.ok( _.isUndefined(err.int8), "integer passes");
             t.ok(!_.isUndefined(err.int9), "integer passes");
+            t.ok( _.isUndefined(err.int10), "integer passes");
+            t.ok(!_.isUndefined(err.int11), "integer passes");
+            t.ok( _.isUndefined(err.int12), "integer passes");
+            t.ok(!_.isUndefined(err.int13), "integer passes");
 
             t.ok(err.int3, "int3 should be at least 3'");
             t.ok(err.int5, "int5 should be at most 8'");
@@ -147,6 +159,10 @@ var tests = [
             // for these, the first error should be these
             t.ok(err.int7, "int7 should be at least 3'");
             t.ok(err.int9, "int9 should be at most 8'");
+
+            // for these, the first error should be these
+            t.ok(err.int11, "int11 should be greater than 4'");
+            t.ok(err.int13, "int13 should be less than 8'");
 
             t.end();
         },

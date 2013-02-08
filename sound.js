@@ -91,6 +91,26 @@ Constraint.prototype.isDate = function(msg) {
     return this;
 };
 
+Constraint.prototype.lt = function(value, msg) {
+    this.rules.push({
+        type  : 'lt',
+        value : value,
+        msg   : msg
+
+    });
+    return this;
+};
+
+Constraint.prototype.gt = function(value, msg) {
+    this.rules.push({
+        type  : 'gt',
+        value : value,
+        msg   : msg
+
+    });
+    return this;
+};
+
 Constraint.prototype.min = function(value, msg) {
     this.rules.push({
         type  : 'min',
@@ -290,6 +310,16 @@ var validateParam = function(name, value, constraint, done) {
         else if ( r.type === 'isDate' ) {
             if ( !_.isDate(value) ) {
                 return done(r.msg || name + ' should be a date', value);
+            }
+        }
+        else if ( r.type === 'gt' ) {
+            if ( value <= r.value ) {
+                return done(r.msg || name + ' should be greater than ' + r.value, value);
+            }
+        }
+        else if ( r.type === 'lt' ) {
+            if ( value >= r.value ) {
+                return done(r.msg || name + ' should be less than ' + r.value, value);
             }
         }
         else if ( r.type === 'min' ) {
