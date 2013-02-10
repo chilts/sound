@@ -209,6 +209,13 @@ Constraint.prototype.toInteger = function() {
     return this;
 };
 
+Constraint.prototype.toFloat = function() {
+    this.rules.push({
+        type : 'toFloat',
+    });
+    return this;
+};
+
 Constraint.prototype.toBoolean = function() {
     this.rules.push({
         type : 'toBoolean',
@@ -388,6 +395,17 @@ var validateParam = function(name, value, constraint, done) {
         else if ( r.type === 'toInteger' ) {
             console.log('Changing the type to an integer');
             value = parseInt(value, 10);
+            if ( Number.isNaN(value) ) {
+                return done(r.msg || name + ' could not be converted to an integer', value);
+            }
+            console.log('-> newValue=[' + value + ']');
+        }
+        else if ( r.type === 'toFloat' ) {
+            console.log('Changing the type to a float');
+            value = parseFloat(value);
+            if ( Number.isNaN(value) ) {
+                return done(r.msg || name + ' could not be converted to a float', value);
+            }
             console.log('-> newValue=[' + value + ']');
         }
         else if ( r.type === 'toBoolean' ) {
