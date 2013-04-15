@@ -140,7 +140,6 @@ Constraint.prototype.minLen = function(len, msg) {
 };
 
 Constraint.prototype.maxLen = function(len, msg) {
-    console.log('Pushing maxLen=' + len + ' onto the rules');
     this.rules.push({
         type : 'maxLen',
         len  : len,
@@ -240,44 +239,26 @@ sound.validate = function(params, schema, callback) {
     var ok = true;
 
     var res = _.extend({}, params);
-    console.log('1 = res:', res);
 
     // go through each property of the schema (we ignore all others)
     var keys = Object.keys(schema);
     keys.forEach(function(key, i) {
-        console.log('===============================================================================');
-        console.log('Checking ' + key);
-        console.log('* Name=' + schema[key]._name);
-        console.log('* key=' + key);
-
         // validate the param against it's own constraints in the schema
         // Note: sound.validateParam(name, value, schema, fn)
-        console.log('* value=[' + res[key] + ']');
         validateParam(schema[key]._name || key, res[key], schema[key], function(err, newValue) {
-            console.log('* err:', err);
             if (err) {
                 ok = false;
                 error[key] = err;
             }
             res[key] = newValue;
-            console.log('cumulative errors:', error);
-            console.log('cumulative result:', res);
         });
 
     });
 
-    console.log('=== END ========================================================================');
-
-    console.log('Final err:', error);
-    console.log('Final res:', res);
     callback(ok ? null : error, res);
 };
 
 var validateParam = function(name, value, constraint, done) {
-    console.log('=== Validating : ' + name + ' ===');
-    console.log('value=[' + value + ']');
-    console.log(constraint);
-
     // first thing to do is see if this param is required ... if not, and it's undefined then we get out of here
     if ( _.isUndefined(value) || _.isNull(value) ) {
         if ( constraint._required ) {
@@ -294,7 +275,6 @@ var validateParam = function(name, value, constraint, done) {
     // now, loop through all the constraints
     for(var i = 0; i < constraint.rules.length; i++ ) {
         var r = constraint.rules[i];
-        console.log(i + ') ', r);
 
         // check all of the different constraints
         if ( r.type === 'isString' ) {
@@ -348,74 +328,50 @@ var validateParam = function(name, value, constraint, done) {
             }
         }
         else if ( r.type === 'maxLen' ) {
-            console.log('*** value=' + value);
-            console.log('*** value.length=' + value.length);
-            console.log('*** r.len=' + r.len);
             if ( value.length > r.len ) {
-                console.log('*** dodgy');
                 return done(r.msg || name + ' should be at most ' + r.len + ' characters', value);
             }
         }
         else if ( r.type === 'matches' ) {
-            console.log('Checking value ' + value + ' against regex');
             var m = value.match(r.regex);
-            console.log('m:', m);
             if ( !value.match(r.regex) ) {
-                console.log('Fails regex for name=' + name);
                 return done(r.msg || name + ' does not validate', value);
             }
         }
         else if ( r.type === 'isUrl' ) {
-            console.log('Checking URL against a regex');
             // ToDo: http://someweblog.com/url-regular-expression-javascript-link-shortener/
             // From: http://stackoverflow.com/questions/8188645/javascript-regex-to-match-a-url-in-a-field-of-text
             // * (http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?
             if ( !value.match(/^https?:\/\/[A-Za-z0-9][A-Za-z0-9-]*(\.[A-Za-z]+)+(:\d+)?(\/\S*)?$/) ) {
-                console.log('Checking URL against a regex');
                 return done(r.msg || name + ' should be a URL and start with http:// or https://', value);
             }
         }
         else if ( r.type === 'trim' ) {
-            console.log('Trimming the value');
             value = value.replace(/^\s+|\s+$/g,'')
-            console.log('-> newValue=[' + value + ']');
         }
         else if ( r.type === 'lowercase' ) {
-            console.log('Lowercasing the value');
             value = value.toLowerCase();
-            console.log('-> newValue=[' + value + ']');
         }
         else if ( r.type === 'uppercase' ) {
-            console.log('Uppercasing the value');
             value = value.toUpperCase();
-            console.log('-> newValue=[' + value + ']');
         }
         else if ( r.type === 'replace' ) {
-            console.log('Replacing a with b in the value');
             value = value.replace(r.a, r.b);
-            console.log('-> newValue=[' + value + ']');
         }
         else if ( r.type === 'toInteger' ) {
-            console.log('Changing the type to an integer');
             value = parseInt(value, 10);
             if ( Number.isNaN(value) ) {
                 return done(r.msg || name + ' could not be converted to an integer', value);
             }
-            console.log('-> newValue=[' + value + ']');
         }
         else if ( r.type === 'toFloat' ) {
-            console.log('Changing the type to a float');
             value = parseFloat(value);
             if ( Number.isNaN(value) ) {
                 return done(r.msg || name + ' could not be converted to a float', value);
             }
-            console.log('-> newValue=[' + value + ']');
         }
         else if ( r.type === 'toBoolean' ) {
-            console.log('Changing the type to an boolean');
             if ( _.isString(value) ) {
-                console.log('GOT A STRING, CONVERTING TO BOOL -> ' + value.toLowerCase());
-                console.log('GOT A STRING, CONVERTING TO BOOL -> ' + valid.boolean[value.toLowerCase()]);
                 if ( value.toLowerCase() in valid.boolean ) {
                     value = valid.boolean[value.toLowerCase()];
                 }
@@ -425,14 +381,12 @@ var validateParam = function(name, value, constraint, done) {
                 }
             }
             else if ( _.isNumber(value) ) {
-                console.log('[[[ right here for ' + value);
                 value = !(value == 0);
             }
             else {
                 // do nothing, the user needs to validate their input prior to this conversion
                 return done(r.msg || name + ' value should be a string or integer when converting to boolean', value);
             }
-            console.log('-> newValue=[' + value + ']');
         }
         else {
             throw new Error('Program Error: unknown type ' + r.type);
