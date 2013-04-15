@@ -202,23 +202,26 @@ Constraint.prototype.replace = function(a, b) {
 // --------------------------------------------------------------------------------------------------------------------
 // coercions
 
-Constraint.prototype.toInteger = function() {
+Constraint.prototype.toInteger = function(msg) {
     this.rules.push({
         type : 'toInteger',
+        msg  : msg,
     });
     return this;
 };
 
-Constraint.prototype.toFloat = function() {
+Constraint.prototype.toFloat = function(msg) {
     this.rules.push({
         type : 'toFloat',
+        msg  : msg,
     });
     return this;
 };
 
-Constraint.prototype.toBoolean = function() {
+Constraint.prototype.toBoolean = function(msg) {
     this.rules.push({
         type : 'toBoolean',
+        msg  : msg,
     });
     return this;
 };
