@@ -6,12 +6,12 @@ sound.js - make sure your data is sound!
 
 ```
 var schema = {
-    username : sound.string().required().matches(/^[a-z0-9]{4,16}$/),
+    username : sound.string().toLowerCase().trim().required().matches(/^[a-z0-9]{4,16}$/),
     password : sound.string().required().minLen(8).maxLen(100),
     email    : sound.string().required().isEmailAddress(),
     logins   : sound.integer().required().min(0),
     url      : sound.string().isUrl(), // optional
-    isAdmin  : sound.boolean().required(),
+    isAdmin  : sound.string().required().toBoolean().isBoolean(),
     dob      : sound.date(), // accepts 'yyyy-mm-dd'
 };
 
@@ -21,7 +21,10 @@ var params = {
     email : 'me@example.com',
 };
 
-var err = sound.validate(params, schema);
+sound.validate(params, schema, function(err, res) {
+    // err if any validations fail
+    // res for all of the validated, manipulated, converted and coerced values
+});
 ```
 
 If anything fails validation, then err will be an object with keys set to each field for each error. Only one error per
@@ -30,18 +33,19 @@ field in the schema will be reported.
 If no failures are detected, err is 'undefined' rather than '{}' since that is truthy false.
 
 ```
-var err = sound.validate(params1, schema);
-if (err) {
-   // something failed, check the keys in err.*
-   ...
-}
-else {
-   // all ok
-   ...
+sound.validate(params1, schema, function(err, result) {);
+    if (err) {
+        // something failed, check the keys in err.*
+        ...
+        return;
+    }
+
+    // all ok
+    ...
 }
 ```
 
-An error object may look like:
+An error may look like:
 
 ```
 {
