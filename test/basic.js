@@ -37,6 +37,17 @@ var schemaForUrls = {
     url4 : sound().isString().required().isUrl(),
     url5 : sound().isString().required().isUrl(),
     url6 : sound().isString().required().isUrl(),
+    url7 : sound().isString().required().isUrl(),
+};
+
+var schemaForTokens = {
+    tok1 : sound().isString().required().isToken(),
+    tok2 : sound().isString().required().isToken(),
+    tok3 : sound().isString().required().isToken(),
+    tok4 : sound().isString().required().isToken(),
+    tok5 : sound().isString().required().isToken(),
+    tok6 : sound().isString().required().isToken(),
+    tok7 : sound().isString().required().isToken(),
 };
 
 var schemaForUrlShortener = {
@@ -177,7 +188,7 @@ var tests = [
             url4 : 'https://google.com/',
             url5 : 'ftp://example.net/',
             url6 : 'http://localhost/',
-            url6 : 'http://localhost.localdomain:8000/',
+            url7 : 'http://localhost.localdomain:8000/',
         },
         test : function(t, err, res) {
             console.log('----------------------------------------');
@@ -189,10 +200,41 @@ var tests = [
             t.ok( _.isUndefined(err.url3), "url3 passes");
             t.ok( _.isUndefined(err.url4), "url4 passes");
             t.ok(!_.isUndefined(err.url5), "url5 fails");
-            t.ok( _.isUndefined(err.url6), "url6 passes");
+            t.ok(!_.isUndefined(err.url6), "url6 fails"); // 'coz we want domain names
             t.ok( _.isUndefined(err.url7), "url7 passes");
 
             t.ok(err.url5, "url5 should be a URL and start with http:// or https://");
+
+            t.end();
+        },
+    },
+
+    {
+        name : 'Tokens',
+        schema : schemaForTokens,
+        params : {
+            tok1 : 'chilts',
+            tok2 : 'yay-pie',
+            tok3 : '-invalid',
+            tok4 : 'invalid-',
+            tok5 : 'contains spaces',
+            tok6 : 'AndyUppercase',
+            tok7 : '*&%@#&',
+        },
+        test : function(t, err, res) {
+            console.log('----------------------------------------');
+            console.log('err:', err);
+            console.log('----------------------------------------');
+            t.ok(_.isObject(err), "is an object");
+            t.ok( _.isUndefined(err.tok1), "tok1 passes");
+            t.ok( _.isUndefined(err.tok2), "tok2 passes");
+            t.ok(!_.isUndefined(err.tok3), "tok3 fails");
+            t.ok(!_.isUndefined(err.tok4), "tok4 fails");
+            t.ok(!_.isUndefined(err.tok5), "tok5 fails");
+            t.ok(!_.isUndefined(err.tok6), "tok6 fails");
+            t.ok(!_.isUndefined(err.tok7), "tok7 fails");
+
+            t.ok(err.tok3, "tok3 should start and end with letters/numbers and contain only lowercase letters, numbers and dashes");
 
             t.end();
         },

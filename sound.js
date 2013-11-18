@@ -165,6 +165,14 @@ Constraint.prototype.isUrl = function(msg) {
     return this;
 };
 
+Constraint.prototype.isToken = function(msg) {
+    this.rules.push({
+        type : 'isToken',
+        msg  : msg
+    });
+    return this;
+};
+
 // --------------------------------------------------------------------------------------------------------------------
 // conversions
 
@@ -390,6 +398,16 @@ var validateParam = function(name, value, constraint) {
                 return {
                     ok  : false,
                     err : r.msg || name + ' should be a URL and start with http:// or https://',
+                };
+            }
+        }
+        else if ( r.type === 'isToken' ) {
+            // Tokens are like URI segments. Lowercase letters, numbers and dashes.
+            console.log(value);
+            if ( !value.match(/^[a-z0-9][a-z0-9-]*[a-z0-9]$/) ) {
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should start and end with letters/numbers and contain only lowercase letters, numbers and dashes',
                 };
             }
         }
