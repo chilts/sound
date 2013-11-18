@@ -70,8 +70,7 @@ var tests = [
 
 tests.forEach(function(v, i) {
     test(v.name, function(t) {
-        sound.validate(v.params, v.schema, function(err, res) {
-            v.test(t, err, res);
-        });
+        var res = sound.validate(v.params, v.schema);
+        v.test(t, res.err, res.vals);
     });
 });

@@ -232,40 +232,48 @@ var sound = function(name) {
     return new Constraint(name);
 };
 
-sound.validate = function(params, schema, callback) {
-
+sound.validate = function(params, schema) {
     var res = {};
-    var error = {};
+    var err = {};
     var ok = true;
 
-    var res = _.extend({}, params);
+    var val = _.extend({}, params);
 
     // go through each property of the schema (we ignore all others)
     var keys = Object.keys(schema);
     keys.forEach(function(key, i) {
         // validate the param against it's own constraints in the schema
         // Note: sound.validateParam(name, value, schema, fn)
-        validateParam(schema[key]._name || key, res[key], schema[key], function(err, newValue) {
-            if (err) {
-                ok = false;
-                error[key] = err;
-            }
-            res[key] = newValue;
-        });
-
+        var validation = validateParam(schema[key]._name || key, val[key], schema[key]);
+        if ( validation.ok ) {
+            val[key] = validation.val;
+        }
+        else {
+            ok = false;
+            err[key] = validation.err;
+        }
     });
 
-    callback(ok ? null : error, res);
+    return {
+        ok   : ok,
+        vals : val,
+        err  : err,
+    };
 };
 
-var validateParam = function(name, value, constraint, done) {
+var validateParam = function(name, value, constraint) {
     // first thing to do is see if this param is required ... if not, and it's undefined then we get out of here
     if ( _.isUndefined(value) || _.isNull(value) ) {
         if ( constraint._required ) {
-            return done(constraint._requiredMsg || name + ' is required', value);
+            return {
+                ok  : false,
+                err : constraint._requiredMsg || name + ' is required',
+            };
         }
         else {
-            return done();
+            return {
+                ok  : true,
+            };
         }
     }
     // else, we have a value, so keep checking things
@@ -279,63 +287,99 @@ var validateParam = function(name, value, constraint, done) {
         // check all of the different constraints
         if ( r.type === 'isString' ) {
             if ( !_.isString(value) ) {
-                return done(r.msg || name + ' should be a string', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be a string',
+                };
             }
         }
         else if ( r.type === 'isInteger' ) {
             if ( parseInt(value, 10) !== value ) {
-                return done(r.msg || name + ' should be an integer', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be an integer',
+                };
             }
         }
         else if ( r.type === 'isFloat' ) {
             if ( typeof value !== 'number' ) {
-                return done(r.msg || name + ' should be a float', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be a float',
+                };
             }
         }
         else if ( r.type === 'isBoolean' ) {
             if ( !_.isBoolean(value) ) {
-                return done(r.msg || name + ' should be a boolean', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be a boolean',
+                };
             }
         }
         else if ( r.type === 'isDate' ) {
             if ( !_.isDate(value) ) {
-                return done(r.msg || name + ' should be a date', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be a date',
+                };
             }
         }
         else if ( r.type === 'gt' ) {
             if ( value <= r.value ) {
-                return done(r.msg || name + ' should be greater than ' + r.value, value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be greater than ' + r.value,
+                };
             }
         }
         else if ( r.type === 'lt' ) {
             if ( value >= r.value ) {
-                return done(r.msg || name + ' should be less than ' + r.value, value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be less than ' + r.value,
+                };
             }
         }
         else if ( r.type === 'min' ) {
             if ( value < r.value ) {
-                return done(r.msg || name + ' should be at least ' + r.value, value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be at least ' + r.value,
+                };
             }
         }
         else if ( r.type === 'max' ) {
             if ( value > r.value ) {
-                return done(r.msg || name + ' should be at most ' + r.value, value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be at most ' + r.value,
+                };
             }
         }
         else if ( r.type === 'minLen' ) {
             if ( value.length < r.len ) {
-                return done(r.msg || name + ' should be at least ' + r.len + ' characters', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be at least ' + r.len + ' characters',
+                };
             }
         }
         else if ( r.type === 'maxLen' ) {
             if ( value.length > r.len ) {
-                return done(r.msg || name + ' should be at most ' + r.len + ' characters', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be at most ' + r.len + ' characters',
+                };
             }
         }
         else if ( r.type === 'matches' ) {
             var m = value.match(r.regex);
             if ( !value.match(r.regex) ) {
-                return done(r.msg || name + ' does not validate', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' does not validate',
+                };
             }
         }
         else if ( r.type === 'isUrl' ) {
@@ -343,7 +387,10 @@ var validateParam = function(name, value, constraint, done) {
             // From: http://stackoverflow.com/questions/8188645/javascript-regex-to-match-a-url-in-a-field-of-text
             // * (http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?
             if ( !value.match(/^https?:\/\/[A-Za-z0-9][A-Za-z0-9-]*(\.[A-Za-z]+)+(:\d+)?(\/\S*)?$/) ) {
-                return done(r.msg || name + ' should be a URL and start with http:// or https://', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be a URL and start with http:// or https://',
+                };
             }
         }
         else if ( r.type === 'trim' ) {
@@ -361,13 +408,19 @@ var validateParam = function(name, value, constraint, done) {
         else if ( r.type === 'toInteger' ) {
             value = parseInt(value, 10);
             if ( Number.isNaN(value) ) {
-                return done(r.msg || name + ' could not be converted to an integer', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' could not be converted to an integer',
+                };
             }
         }
         else if ( r.type === 'toFloat' ) {
             value = parseFloat(value);
             if ( Number.isNaN(value) ) {
-                return done(r.msg || name + ' could not be converted to a float', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' could not be converted to a float',
+                };
             }
         }
         else if ( r.type === 'toBoolean' ) {
@@ -377,7 +430,10 @@ var validateParam = function(name, value, constraint, done) {
                 }
                 else {
                     // do nothing, the user needs to validate their input prior to this conversion
-                    return done(r.msg || name + ' is not a recognised value when converting to boolean', value);
+                    return {
+                        ok  : false,
+                        err : r.msg || name + ' is not a recognised value when converting to boolean',
+                    };
                 }
             }
             else if ( _.isNumber(value) ) {
@@ -385,7 +441,10 @@ var validateParam = function(name, value, constraint, done) {
             }
             else {
                 // do nothing, the user needs to validate their input prior to this conversion
-                return done(r.msg || name + ' value should be a string or integer when converting to boolean', value);
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' value should be a string or integer when converting to boolean',
+                };
             }
         }
         else {
@@ -394,7 +453,10 @@ var validateParam = function(name, value, constraint, done) {
     }
 
     // no error, so just return nothing
-    done(null, value);
+    return {
+        ok  : true,
+        val : value,
+    };
 };
 
 // --------------------------------------------------------------------------------------------------------------------

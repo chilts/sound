@@ -73,8 +73,7 @@ var tests = [
             date     : new Date(),
         },
         test : function(t, err, res) {
-            t.ok(!_.isObject(err), "is not an object");
-            t.ok(_.isNull(err), "is null");
+            t.ok(_.isObject(err), "is an object");
             t.end();
         },
     },
@@ -210,8 +209,7 @@ var tests = [
             console.log('----------------------------------------');
             console.log('err:', err);
             console.log('----------------------------------------');
-            t.ok(!_.isObject(err), "is not an object");
-            t.ok(_.isNull(err), "is null");
+            t.ok(_.isObject(err), "is an object");
 
             t.end();
         },
@@ -243,16 +241,9 @@ var tests = [
 
 ];
 
-console.log('1');
 tests.forEach(function(v, i) {
-    console.log('NEW TEST');
     test(v.name, function(t) {
-        console.log('INSIDE TEST');
-        var err = sound.validate(v.params, v.schema, function(err, res) {
-            v.test(t, err, res);
-        });
+        var res = sound.validate(v.params, v.schema);
+        v.test(t, res.err, res.vals);
     });
-    console.log('END OF TEST');
 });
-console.log('ENDED');
-

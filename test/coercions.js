@@ -63,7 +63,7 @@ var tests = [
             t.equal(res.percentage0, '-1', 'percentage0 does not get converted');
             t.equal(res.percentage1, 0, 'percentage1 gets converted to an integer');
             t.equal(res.percentage2, 100, 'percentage2 gets converted to an integer');
-            t.equal(res.percentage3, 101, 'percentage3 gets converted to an integer');
+            t.equal(res.percentage3, '101', 'percentage3 does not get converted');
             t.equal(res.percentage4, '1.1', 'percentage4 does not get converted');
             t.ok(!_.isNull(res.percentage5), 'percentage5 does not get converted');
 
@@ -163,8 +163,7 @@ var tests = [
 
 tests.forEach(function(v, i) {
     test(v.name, function(t) {
-        sound.validate(v.params, v.schema, function(err, res) {
-            v.test(t, err, res);
-        });
+        var res = sound.validate(v.params, v.schema);
+        v.test(t, res.err, res.vals);
     });
 });
