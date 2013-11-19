@@ -40,6 +40,16 @@ var schemaForUrls = {
     url7 : sound().isString().required().isUrl(),
 };
 
+var schemaForEmailAddresses = {
+    email1 : sound().isString().required().isEmailAddress(),
+    email2 : sound().isString().required().isEmailAddress(),
+    email3 : sound().isString().required().isEmailAddress(),
+    email4 : sound().isString().required().isEmailAddress(),
+    email5 : sound().isString().required().isEmailAddress(),
+    email6 : sound().isString().required().isEmailAddress(),
+    email7 : sound().isString().required().isEmailAddress(),
+};
+
 var schemaForTokens = {
     tok1 : sound().isString().required().isToken(),
     tok2 : sound().isString().required().isToken(),
@@ -204,6 +214,37 @@ var tests = [
             t.ok( _.isUndefined(err.url7), "url7 passes");
 
             t.ok(err.url5, "url5 should be a URL and start with http:// or https://");
+
+            t.end();
+        },
+    },
+
+    {
+        name : 'Email Addresses',
+        schema : schemaForEmailAddresses,
+        params : {
+            email1 : '',
+            email2 : '@',
+            email3 : 'blah',
+            email4 : '1@2.de',
+            email5 : 'andychilton+tagged@gmail.com',
+            email6 : 'mchu4apc@fs2.ee.umist.ac.uk',
+            email7 : 'me@t.co',
+        },
+        test : function(t, err, res) {
+            console.log('----------------------------------------');
+            console.log('err:', err);
+            console.log('----------------------------------------');
+            t.ok(_.isObject(err), "is an object");
+            t.ok(!_.isUndefined(err.email1), "email1 fails");
+            t.ok(!_.isUndefined(err.email2), "email2 fails");
+            t.ok(!_.isUndefined(err.email3), "email3 fails");
+            t.ok( _.isUndefined(err.email4), "email4 passes");
+            t.ok( _.isUndefined(err.email5), "email5 passes");
+            t.ok( _.isUndefined(err.email6), "email6 passes");
+            t.ok( _.isUndefined(err.email7), "email7 passes");
+
+            t.ok(err.email1, "email1 should be an Email Address");
 
             t.end();
         },

@@ -165,6 +165,14 @@ Constraint.prototype.isUrl = function(msg) {
     return this;
 };
 
+Constraint.prototype.isEmailAddress = function(msg) {
+    this.rules.push({
+        type : 'isEmailAddress',
+        msg  : msg
+    });
+    return this;
+};
+
 Constraint.prototype.isToken = function(msg) {
     this.rules.push({
         type : 'isToken',
@@ -398,6 +406,16 @@ var validateParam = function(name, value, constraint) {
                 return {
                     ok  : false,
                     err : r.msg || name + ' should be a URL and start with http:// or https://',
+                };
+            }
+        }
+        else if ( r.type === 'isEmailAddress' ) {
+            // Validating Email Addresses is Difficult!
+            // ! $ & * - = ^ ` | ~ # % ' + / ? _ { }
+            if ( !value.match(/^[A-Za-z0-9\._%+-]+@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/) ) {
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be an Email Address',
                 };
             }
         }
