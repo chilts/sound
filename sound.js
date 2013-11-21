@@ -248,19 +248,17 @@ var sound = function(name) {
     return new Constraint(name);
 };
 
-sound.validate = function(params, schema) {
-    var res = {};
+sound.validate = function(arg, schema) {
+    var val = {};
     var err = {};
     var ok = true;
-
-    var val = _.extend({}, params);
 
     // go through each property of the schema (we ignore all others)
     var keys = Object.keys(schema);
     keys.forEach(function(key, i) {
-        // validate the param against it's own constraints in the schema
+        // validate the arg against it's own constraints in the schema
         // Note: sound.validateParam(name, value, schema, fn)
-        var validation = validateParam(schema[key]._name || key, val[key], schema[key]);
+        var validation = validateParam(schema[key]._name || key, arg[key], schema[key]);
         if ( validation.ok ) {
             val[key] = validation.val;
         }
@@ -271,15 +269,16 @@ sound.validate = function(params, schema) {
     });
 
     return {
-        ok   : ok,
-        vals : val,
-        err  : err,
+        ok  : ok,
+        arg : arg,
+        val : val,
+        err : err,
     };
 };
 
 var validateParam = function(name, value, constraint) {
     // first thing to do is see if this param is required ... if not, and it's undefined then we get out of here
-    if ( _.isUndefined(value) || _.isNull(value) ) {
+    if ( _.isUndefined(value) || _.isNull(value) || value === '' ) {
         if ( constraint._required ) {
             return {
                 ok  : false,
@@ -421,7 +420,6 @@ var validateParam = function(name, value, constraint) {
         }
         else if ( r.type === 'isToken' ) {
             // Tokens are like URI segments. Lowercase letters, numbers and dashes.
-            console.log(value);
             if ( !value.match(/^[a-z0-9][a-z0-9-]*[a-z0-9]$/) ) {
                 return {
                     ok  : false,

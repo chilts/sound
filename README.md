@@ -6,13 +6,13 @@ sound.js - make sure your data is sound!
 
 ```
 var schema = {
-    username : sound.string().toLowerCase().trim().required().matches(/^[a-z0-9]{4,16}$/),
-    password : sound.string().required().minLen(8).maxLen(100),
-    email    : sound.string().required().isEmailAddress(),
-    logins   : sound.integer().required().min(0),
-    url      : sound.string().isUrl(), // optional
-    isAdmin  : sound.string().required().toBoolean().isBoolean(),
-    dob      : sound.date(), // accepts 'yyyy-mm-dd'
+    username : sound().isString().toLowerCase().trim().required().matches(/^[a-z0-9]{4,16}$/),
+    password : sound().isString().required().minLen(8).maxLen(100),
+    email    : sound().isString().required().isEmailAddress(),
+    logins   : sound().isInteger().required().min(0),
+    url      : sound().isString().isUrl(), // optional
+    isAdmin  : sound().isString().required().toBoolean().isBoolean(),
+    dob      : sound().isDate(), // accepts 'yyyy-mm-dd'
 };
 
 var params = {

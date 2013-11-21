@@ -60,11 +60,11 @@ var tests = [
             t.ok(!_.isUndefined(err.percentage4), "1.1 fails the regex");
             t.ok(!_.isUndefined(err.percentage4), "'not a number' fails the coercion");
 
-            t.equal(res.percentage0, '-1', 'percentage0 does not get converted');
+            t.equal(res.percentage0, undefined, 'percentage0 does not get returned');
             t.equal(res.percentage1, 0, 'percentage1 gets converted to an integer');
             t.equal(res.percentage2, 100, 'percentage2 gets converted to an integer');
-            t.equal(res.percentage3, '101', 'percentage3 does not get converted');
-            t.equal(res.percentage4, '1.1', 'percentage4 does not get converted');
+            t.equal(res.percentage3, undefined, 'percentage3 does not get converted');
+            t.equal(res.percentage4, undefined, 'percentage4 does not get converted');
             t.ok(!_.isNull(res.percentage5), 'percentage5 does not get converted');
 
             t.end();
@@ -88,7 +88,6 @@ var tests = [
             bool10 : 'invalid',
         },
         test : function(t, err, res) {
-            console.log('[][][][][][][][][][][][]:', err);
             t.ok(_.isObject(err), "err is an object");
             t.ok(_.isObject(res), "res is an object");
 
@@ -114,7 +113,7 @@ var tests = [
             t.equal(res.bool7, true,  'bool7');
             t.equal(res.bool8, false, 'bool8');
             t.equal(res.bool9, true,  'bool9');
-            t.equal(res.bool10, 'invalid', 'bool10');
+            t.equal(res.bool10, undefined, 'bool10');
 
             t.end();
         },
@@ -164,6 +163,6 @@ var tests = [
 tests.forEach(function(v, i) {
     test(v.name, function(t) {
         var res = sound.validate(v.params, v.schema);
-        v.test(t, res.err, res.vals);
+        v.test(t, res.err, res.val);
     });
 });

@@ -155,9 +155,6 @@ var tests = [
             int13 : 8,
         },
         test : function(t, err, res) {
-            console.log('----------------------------------------');
-            console.log('err:', err);
-            console.log('----------------------------------------');
             t.ok(_.isObject(err), "is an object");
             t.ok( _.isUndefined(err.int1), "integer passes");
             t.ok( _.isUndefined(err.int2), "integer passes");
@@ -201,9 +198,6 @@ var tests = [
             url7 : 'http://localhost.localdomain:8000/',
         },
         test : function(t, err, res) {
-            console.log('----------------------------------------');
-            console.log('err:', err);
-            console.log('----------------------------------------');
             t.ok(_.isObject(err), "is an object");
             t.ok( _.isUndefined(err.url1), "url1 passes");
             t.ok( _.isUndefined(err.url2), "url2 passes");
@@ -232,9 +226,6 @@ var tests = [
             email7 : 'me@t.co',
         },
         test : function(t, err, res) {
-            console.log('----------------------------------------');
-            console.log('err:', err);
-            console.log('----------------------------------------');
             t.ok(_.isObject(err), "is an object");
             t.ok(!_.isUndefined(err.email1), "email1 fails");
             t.ok(!_.isUndefined(err.email2), "email2 fails");
@@ -263,9 +254,6 @@ var tests = [
             tok7 : '*&%@#&',
         },
         test : function(t, err, res) {
-            console.log('----------------------------------------');
-            console.log('err:', err);
-            console.log('----------------------------------------');
             t.ok(_.isObject(err), "is an object");
             t.ok( _.isUndefined(err.tok1), "tok1 passes");
             t.ok( _.isUndefined(err.tok2), "tok2 passes");
@@ -289,9 +277,6 @@ var tests = [
             url   : 'http://chilts.org/',
         },
         test : function(t, err, res) {
-            console.log('----------------------------------------');
-            console.log('err:', err);
-            console.log('----------------------------------------');
             t.ok(_.isObject(err), "is an object");
 
             t.end();
@@ -307,9 +292,6 @@ var tests = [
             favColour2 : 'purple',
         },
         test : function(t, err, res) {
-            console.log('----------------------------------------');
-            console.log('err:', err);
-            console.log('----------------------------------------');
             t.ok(_.isObject(err), "is an object");
 
             t.ok( _.isUndefined(err.username), "username is correct");
@@ -327,6 +309,6 @@ var tests = [
 tests.forEach(function(v, i) {
     test(v.name, function(t) {
         var res = sound.validate(v.params, v.schema);
-        v.test(t, res.err, res.vals);
+        v.test(t, res.err, res.val);
     });
 });

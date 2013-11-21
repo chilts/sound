@@ -32,7 +32,7 @@ var tests = [
             t.ok(_.isUndefined(err.username3), "string passes");
             t.ok(_.isUndefined(err.username4), "string passes");
 
-            t.equal(res.username0, '    ', 'username0 does not get converted');
+            t.equal(res.username0, undefined, 'username0 does not get converted');
             t.equal(res.username1, 'andy', 'username0 gets converted to the empty string');
             t.equal(res.username2, 'andy', 'username0 gets converted to the empty string');
             t.equal(res.username3, 'the-boss', 'username0 gets converted to the empty string');
@@ -47,6 +47,6 @@ var tests = [
 tests.forEach(function(v, i) {
     test(v.name, function(t) {
         var res = sound.validate(v.params, v.schema);
-        v.test(t, res.err, res.vals);
+        v.test(t, res.err, res.val);
     });
 });

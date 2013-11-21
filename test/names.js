@@ -33,6 +33,7 @@ var tests = [
             happy : 'Yes',
         },
         test : function(t, err, res) {
+            console.log(err, res);
             t.ok(_.isObject(err), "err is an object");
             t.ok(_.isObject(res), "res is an object");
 
@@ -87,6 +88,6 @@ var tests = [
 tests.forEach(function(v, i) {
     test(v.name, function(t) {
         var res = sound.validate(v.params, v.schema);
-        v.test(t, res.err, res.vals);
+        v.test(t, res.err, res.val);
     });
 });
