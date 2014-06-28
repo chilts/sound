@@ -21,20 +21,23 @@ var params = {
     email : 'me@example.com',
 };
 
-sound.validate(params, schema, function(err, res) {
-    // err if any validations fail
-    // res for all of the validated, manipulated, converted and coerced values
-});
+var out = sound.validate(params, schema);
+if ( out.ok ) {
+    // everything validated ... params contained in `out.val`
+}
+else {
+    // something failed validation ... errors contained in `out.err`
+}
 ```
 
 If anything fails validation, then err will be an object with keys set to each field for each error. Only one error per
 field in the schema will be reported.
 
-If no failures are detected, err is 'undefined' rather than '{}' since that is truthy false.
+If no failures are detected, err is just `{}`. You need to check `out.ok` to see if validation passed or failed.
 
 ```
-sound.validate(params1, schema, function(err, result) {);
-    if (err) {
+var out = sound.validate(params1, schema)
+if (err) {
         // something failed, check the keys in err.*
         ...
         return;
