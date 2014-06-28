@@ -10,6 +10,7 @@ var schema = {
     password : sound().isString().required().minLen(8).maxLen(100),
     email    : sound().isString().required().isEmailAddress(),
     logins   : sound().isInteger().required().min(0),
+    awesome  : sound().isString().default('yes').toBoolean().isBoolean(),
     url      : sound().isString().isUrl(), // optional
     isAdmin  : sound().isString().required().toBoolean().isBoolean(),
     dob      : sound().isDate(), // accepts 'yyyy-mm-dd'

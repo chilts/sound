@@ -33,6 +33,7 @@ var Constraint = function(name) {
     this._name = name;
     this._required = false;
     this._requiredMsg = undefined;
+    this._default = undefined;
     this.rules = [];
     return this;
 };
@@ -45,6 +46,11 @@ Constraint.prototype.name = function(_name) {
 Constraint.prototype.required = function(msg) {
     this._required = true;
     this._requiredMsg = msg;
+    return this;
+};
+
+Constraint.prototype.default = function(val) {
+    this._default = val;
     return this;
 };
 
@@ -279,7 +285,14 @@ sound.validate = function(arg, schema) {
 var validateParam = function(name, value, constraint) {
     // first thing to do is see if this param is required ... if not, and it's undefined then we get out of here
     if ( _.isUndefined(value) || _.isNull(value) || value === '' ) {
+        // set the default (if there is one)
+        value = constraint._default
+    }
+
+    // now check the value again
+    if ( _.isUndefined(value) || _.isNull(value) || value === '' ) {
         if ( constraint._required ) {
+          // if we are required, then check to see if we can use a default
             return {
                 ok  : false,
                 err : constraint._requiredMsg || name + ' is required',
