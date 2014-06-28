@@ -266,7 +266,10 @@ sound.validate = function(arg, schema) {
         // Note: sound.validateParam(name, value, schema, fn)
         var validation = validateParam(schema[key]._name || key, arg[key], schema[key]);
         if ( validation.ok ) {
-            val[key] = validation.val;
+            // don't copy over nulls which appear if the arg doesn't have it
+            if (typeof validation.val !== 'undefined' ) {
+                val[key] = validation.val;
+            }
         }
         else {
             ok = false;

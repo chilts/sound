@@ -8,6 +8,11 @@ var signup = {
     password : sound().isString('use at least 8 chars').required().minLen(8).maxLen(100),
 };
 
+var nullsBeGone = {
+    username  : sound().isString().required(),
+    interests : sound().isString(),
+};
+
 var tests = [
 
     {
@@ -55,6 +60,24 @@ var tests = [
             t.equal(res.arg.username, '  Andy  ', 'username is the same');
             t.equal(res.arg.password, 's3kr1ts3kr1t', 'password is intact');
             t.equal(res.arg.email, '', 'email is still an empty string');
+
+            t.end();
+        },
+    },
+
+    {
+        name : 'nulls should not appear when nothing given',
+        schema : nullsBeGone,
+        params : {
+            username : 'chilts',
+        },
+        test : function(t, res) {
+            t.ok(_.isObject(res.err), "is an object");
+
+            t.equal(res.ok, true, 'Validates ok');
+
+            t.equal(res.val.username, 'chilts', 'username given');
+            t.ok(!('interests' in res.val), 'There should be no interests in the val');
 
             t.end();
         },
