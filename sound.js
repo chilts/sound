@@ -286,7 +286,9 @@ var validateParam = function(name, value, constraint) {
     // first thing to do is see if this param is required ... if not, and it's undefined then we get out of here
     if ( _.isUndefined(value) || _.isNull(value) || value === '' ) {
         // set the default (if there is one)
-        value = constraint._default
+        if ( !_.isUndefined(constraint._default) ) {
+            value = constraint._default
+        }
     }
 
     // now check the value again
