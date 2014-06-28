@@ -37,15 +37,13 @@ If no failures are detected, err is just `{}`. You need to check `out.ok` to see
 
 ```
 var out = sound.validate(params1, schema)
-if (err) {
-        // something failed, check the keys in err.*
-        ...
-        return;
-    }
-
-    // all ok
+if ( !out.ok ) {
+    // something failed, check the keys in `out.err.*`
     ...
+    return;
 }
+
+// all ok
 ```
 
 An error may look like:
