@@ -1,7 +1,7 @@
 {
     "name"         : "sound",
     "description"  : "Make sure your data is sound! Validation library for Node.js.",
-    "version"      : "1.1.0",
+    "version"      : "1.2.0",
     "main"         : "sound.js",
     "author"       : {
         "name"  : "Andrew Chilton",
