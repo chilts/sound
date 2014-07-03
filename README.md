@@ -14,12 +14,14 @@ var schema = {
     url      : sound().isString().isUrl(), // optional
     isAdmin  : sound().isString().required().toBoolean().isBoolean(),
     dob      : sound().isDate(), // accepts 'yyyy-mm-dd'
+    agree    : sound().isString().toBoolean().is(true), // make sure they tick T&C's
 };
 
 var params = {
     username : 'chilts',
     password : 'abcdefgh',
     email : 'me@example.com',
+    agree : 'on', // will convert to true
 };
 
 var out = sound.validate(params, schema);

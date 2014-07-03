@@ -83,6 +83,10 @@ var tests = [
             isAdmin  : sound().isBoolean().name('Is Admin').required(),
             isHuman  : sound().isBoolean().name('Is Human').required(),
             date     : sound().isDate().name('Date').required(),
+            agree    : sound().is(true).name('Agree'),
+            hasHair  : sound().is(false).name('Have Hair?'),
+            age      : sound().is(21).name('Is 21?'),
+            yes      : sound().is('yes'),
         },
         params : {
             username : 'andy',
@@ -92,6 +96,10 @@ var tests = [
             isAdmin  : false,
             isHuman  : true,
             date     : new Date(),
+            agree    : true,
+            hasHair  : false,
+            age      : 21,
+            yes      : 'yes',
         },
         test : function(t, err, res) {
             t.ok(_.isObject(err), "is an object");

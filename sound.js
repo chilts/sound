@@ -97,6 +97,15 @@ Constraint.prototype.isDate = function(msg) {
     return this;
 };
 
+Constraint.prototype.is = function(value, msg) {
+    this.rules.push({
+        type : 'is',
+        value : value,
+        msg  : msg
+    });
+    return this;
+};
+
 Constraint.prototype.lt = function(value, msg) {
     this.rules.push({
         type  : 'lt',
@@ -355,6 +364,14 @@ var validateParam = function(name, value, constraint) {
                 return {
                     ok  : false,
                     err : r.msg || name + ' should be a date',
+                };
+            }
+        }
+        else if ( r.type === 'is' ) {
+            if ( value !== r.value ) {
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be ' + r.value,
                 };
             }
         }
