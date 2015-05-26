@@ -1,6 +1,6 @@
 {
     "name"         : "sound",
-    "description"  : "Make sure your data is sound! Validation library for Node.js.",
+    "description"  : "Make sure your data is sound! Validation and conversion library for Node.js.",
     "version"      : "1.2.0",
     "main"         : "sound.js",
     "author"       : {
@@ -29,10 +29,7 @@
         "url"  : "http://github.com/chilts/sound/issues",
         "mail" : "andychilton@gmail.com"
     },
-    "licenses" : [{
-        "type" : "MIT",
-        "url"  : "http://chilts.mit-license.org/2013/"
-    }],
+    "licenses" : "MIT",
     "keywords" : [ "validate", "validation", "input", "params" ],
     "scripts"  : {
         "test" : "tap test/*.js"
