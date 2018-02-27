@@ -2,11 +2,13 @@ sound.js - make sure your data is sound!
 
 [![Build Status](https://travis-ci.org/appsattic/sound.png?branch=master)](https://travis-ci.org/appsattic/sound)
 
-# Synopsis #
+## Synopsis ##
+
+## Examples ##
 
 ```
 var schema = {
-    username : sound().isString().toLowerCase().trim().required().matches(/^[a-z0-9]{4,16}$/),
+    username : sound().isString().lowercase().trim().required().matches(/^[a-z0-9]{4,16}$/),
     password : sound().isString().required().minLen(8).maxLen(100),
     email    : sound().isString().required().isEmailAddress(),
     logins   : sound().isInteger().required().min(0),
@@ -59,6 +61,10 @@ An error may look like:
     date: 'Date should be of type date'
 }
 ```
+
+## Unknown Params ##
+
+Only params that we know about are passed back as `out.val`.
 
 ## Other Validation Libraries ##
 
