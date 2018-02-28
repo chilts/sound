@@ -3,23 +3,23 @@ var test = require("tape");
 var sound = require('../sound.js');
 
 var requiredSchema = {
-    username : sound().isString().required('a'),
-    logins   : sound().isInteger().required('b'),
-    isHuman  : sound().isBoolean().required('c'),
-    pi       : sound().isFloat().required('d'),
+    username : sound().isString().isRequired('a'),
+    logins   : sound().isInteger().isRequired('b'),
+    isHuman  : sound().isBoolean().isRequired('c'),
+    pi       : sound().isFloat().isRequired('d'),
 };
 
 var errorsSchema = {
-    username1 : sound().isString().required().lowercase().matches(/^[a-z][a-z0-9-]{3,}$/, 'Username should only contain letters, numbers and the dash character.'),
-    username2 : sound().isString().required().minLen(3, 'Username must be at least 3 characters long'),
-    username3 : sound().isString().required().maxLen(8, 'Must be shorter than 8 chars.'),
-    username4 : sound().isString().required().maxLen(8, 'Must be shorter than 8 chars.'),
+    username1 : sound().isString().isRequired().toLowerCase().isMatch(/^[a-z][a-z0-9-]{3,}$/, 'Username should only contain letters, numbers and the dash character.'),
+    username2 : sound().isString().isRequired().isMinLen(3, 'Username must be at least 3 characters long'),
+    username3 : sound().isString().isRequired().isMaxLen(8, 'Must be shorter than 8 chars.'),
+    username4 : sound().isString().isRequired().isMaxLen(8, 'Must be shorter than 8 chars.'),
 };
 
 var tests = [
 
     {
-        name : "Error messages if .required() isn't fulfilled",
+        name : "Error messages if .isRequired() isn't fulfilled",
         schema : requiredSchema,
         params : {},
         test : function(t, err, res) {
@@ -31,10 +31,10 @@ var tests = [
             t.ok(!_.isUndefined(err.isHuman), "isHuman fails");
             t.ok(!_.isUndefined(err.pi), "pi fails");
 
-            t.equal(err.username, 'a', 'username .required() message is correct');
-            t.equal(err.logins, 'b', 'logins .required() message is correct');
-            t.equal(err.isHuman, 'c', 'isHuman .required() message is correct');
-            t.equal(err.pi, 'd', 'pi .required() message is correct');
+            t.equal(err.username, 'a', 'username .isRequired() message is correct');
+            t.equal(err.logins, 'b', 'logins .isRequired() message is correct');
+            t.equal(err.isHuman, 'c', 'isHuman .isRequired() message is correct');
+            t.equal(err.pi, 'd', 'pi .isRequired() message is correct');
 
             t.end();
         },

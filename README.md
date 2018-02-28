@@ -8,15 +8,15 @@ sound.js - make sure your data is sound!
 
 ```
 var schema = {
-    username : sound().isString().lowercase().trim().required().matches(/^[a-z0-9]{4,16}$/),
-    password : sound().isString().required().minLen(8).maxLen(100),
-    email    : sound().isString().required().isEmailAddress(),
-    logins   : sound().isInteger().required().min(0),
-    awesome  : sound().isString().default('yes').toBoolean().isBoolean(),
+    username : sound().isString().toLowerCase().toTrim().isRequired().isMatch(/^[a-z0-9]{4,16}$/),
+    password : sound().isString().isRequired().isMinLen(8).isMaxLen(100),
+    email    : sound().isString().isRequired().isEmailAddress(),
+    logins   : sound().isInteger().isRequired().isMinVal(0),
+    awesome  : sound().isString().hasDefault('yes').toBoolean().isBoolean(),
     url      : sound().isString().isUrl(), // optional
-    isAdmin  : sound().isString().required().toBoolean().isBoolean(),
+    isAdmin  : sound().isString().isRequired().toBoolean().isBoolean(),
     dob      : sound().isDate(), // accepts 'yyyy-mm-dd'
-    agree    : sound().isString().toBoolean().is(true), // make sure they tick T&C's
+    agree    : sound().isString().toBoolean().isEqual(true), // make sure they tick T&C's
 };
 
 var params = {

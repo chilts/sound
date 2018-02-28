@@ -3,26 +3,26 @@ var test = require("tape");
 var sound = require('../sound.js');
 
 var coercionsForStrings = {
-    percentage0 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage1 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage2 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage3 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage4 : sound().isString().trim().required().matches(/^\d+$/).toInteger().min(0).max(100),
-    percentage5 : sound().isString().required().toInteger().min(0).max(100),
+    percentage0 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),
+    percentage1 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),
+    percentage2 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),
+    percentage3 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),
+    percentage4 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),
+    percentage5 : sound().isString().isRequired().toInteger().isMinVal(0).isMaxVal(100),
 };
 
 var coercionsToBooleans = {
     bool0 : sound().isInteger().toBoolean(),
     bool1 : sound().isInteger().toBoolean(),
-    bool2 : sound().isString().trim().toBoolean(),
-    bool3 : sound().isString().trim().toBoolean(),
-    bool4 : sound().isString().trim().toBoolean(),
-    bool5 : sound().isString().trim().toBoolean(),
-    bool6 : sound().isString().trim().toBoolean(),
-    bool7 : sound().isString().trim().toBoolean(),
-    bool8 : sound().isString().trim().toBoolean(),
-    bool9 : sound().isString().trim().toBoolean(),
-    bool10 : sound().isString().trim().toBoolean(),
+    bool2 : sound().isString().toTrim().toBoolean(),
+    bool3 : sound().isString().toTrim().toBoolean(),
+    bool4 : sound().isString().toTrim().toBoolean(),
+    bool5 : sound().isString().toTrim().toBoolean(),
+    bool6 : sound().isString().toTrim().toBoolean(),
+    bool7 : sound().isString().toTrim().toBoolean(),
+    bool8 : sound().isString().toTrim().toBoolean(),
+    bool9 : sound().isString().toTrim().toBoolean(),
+    bool10 : sound().isString().toTrim().toBoolean(),
 };
 
 var coercionsToFloats = {

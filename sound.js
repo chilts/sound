@@ -27,6 +27,35 @@ var valid = {
     },
 };
 
+const T_IS_STRING        = 'isString';
+const T_IS_INTEGER       = 'isInteger';
+const T_IS_FLOAT         = 'isFloat';
+const T_IS_BOOLEAN       = 'isBoolean';
+const T_IS_DATE          = 'isDate';
+
+const T_IS_URL           = 'isUrl';
+const T_IS_EMAIL_ADDRESS = 'isEmailAddress';
+const T_IS_TOKEN         = 'isToken';
+const T_IS_MATCH         = 'isMatch';
+
+const T_TO_TRIM          = 'toTrim';
+const T_TO_LOWER_CASE    = 'toLowerCase';
+const T_TO_UPPER_CASE    = 'toUpperCase';
+const T_TO_REPLACE       = 'toReplace';
+
+const T_IS_EQUAL         = 'isEqual';
+const T_IS_MIN_LEN       = 'isMinLen';
+const T_IS_MAX_LEN       = 'isMaxLen';
+const T_IS_MIN_VAL       = 'isMinVal';
+const T_IS_MAX_VAL       = 'isMaxVal';
+const T_IS_GREATER_THAN  = 'isGreaterThan';
+const T_IS_LESS_THAN     = 'isLessThan';
+
+const T_TO_STRING        = 'toString';
+const T_TO_INTEGER       = 'toInteger';
+const T_TO_FLOAT         = 'toFloat';
+const T_TO_BOOLEAN       = 'toBoolean';
+
 // --------------------------------------------------------------------------------------------------------------------
 
 var Constraint = function(name) {
@@ -38,18 +67,18 @@ var Constraint = function(name) {
     return this;
 };
 
-Constraint.prototype.name = function(_name) {
+Constraint.prototype.setName = function(_name) {
     this._name = _name;
     return this;
 };
 
-Constraint.prototype.required = function(msg) {
+Constraint.prototype.isRequired = function(msg) {
     this._required = true;
     this._requiredMsg = msg;
     return this;
 };
 
-Constraint.prototype.default = function(val) {
+Constraint.prototype.hasDefault = function(val) {
     this._default = val;
     return this;
 };
@@ -59,7 +88,7 @@ Constraint.prototype.default = function(val) {
 
 Constraint.prototype.isString = function(msg) {
     this.rules.push({
-        type : 'isString',
+        type : T_IS_STRING,
         msg  : msg
     });
     return this;
@@ -67,7 +96,7 @@ Constraint.prototype.isString = function(msg) {
 
 Constraint.prototype.isInteger = function(msg) {
     this.rules.push({
-        type : 'isInteger',
+        type : T_IS_INTEGER,
         msg  : msg
     });
     return this;
@@ -75,7 +104,7 @@ Constraint.prototype.isInteger = function(msg) {
 
 Constraint.prototype.isFloat = function(msg) {
     this.rules.push({
-        type : 'isFloat',
+        type : T_IS_FLOAT,
         msg  : msg
     });
     return this;
@@ -83,7 +112,7 @@ Constraint.prototype.isFloat = function(msg) {
 
 Constraint.prototype.isBoolean = function(msg) {
     this.rules.push({
-        type : 'isBoolean',
+        type : T_IS_BOOLEAN,
         msg  : msg
     });
     return this;
@@ -91,24 +120,24 @@ Constraint.prototype.isBoolean = function(msg) {
 
 Constraint.prototype.isDate = function(msg) {
     this.rules.push({
-        type : 'isDate',
+        type : T_IS_DATE,
         msg  : msg
     });
     return this;
 };
 
-Constraint.prototype.is = function(value, msg) {
+Constraint.prototype.isEqual = function(value, msg) {
     this.rules.push({
-        type : 'is',
+        type : T_IS_EQUAL,
         value : value,
         msg  : msg
     });
     return this;
 };
 
-Constraint.prototype.lt = function(value, msg) {
+Constraint.prototype.isLessThan = function(value, msg) {
     this.rules.push({
-        type  : 'lt',
+        type  : T_IS_LESS_THAN,
         value : value,
         msg   : msg
 
@@ -116,9 +145,9 @@ Constraint.prototype.lt = function(value, msg) {
     return this;
 };
 
-Constraint.prototype.gt = function(value, msg) {
+Constraint.prototype.isGreaterThan = function(value, msg) {
     this.rules.push({
-        type  : 'gt',
+        type  : T_IS_GREATER_THAN,
         value : value,
         msg   : msg
 
@@ -126,9 +155,9 @@ Constraint.prototype.gt = function(value, msg) {
     return this;
 };
 
-Constraint.prototype.min = function(value, msg) {
+Constraint.prototype.isMinVal = function(value, msg) {
     this.rules.push({
-        type  : 'min',
+        type  : T_IS_MIN_VAL,
         value : value,
         msg   : msg
 
@@ -136,36 +165,36 @@ Constraint.prototype.min = function(value, msg) {
     return this;
 };
 
-Constraint.prototype.max = function(value, msg) {
+Constraint.prototype.isMaxVal = function(value, msg) {
     this.rules.push({
-        type  : 'max',
+        type  : T_IS_MAX_VAL,
         value : value,
         msg   : msg
     });
     return this;
 };
 
-Constraint.prototype.minLen = function(len, msg) {
+Constraint.prototype.isMinLen = function(len, msg) {
     this.rules.push({
-        type : 'minLen',
+        type : T_IS_MIN_LEN,
         len  : len,
         msg  : msg
     });
     return this;
 };
 
-Constraint.prototype.maxLen = function(len, msg) {
+Constraint.prototype.isMaxLen = function(len, msg) {
     this.rules.push({
-        type : 'maxLen',
+        type : T_IS_MAX_LEN,
         len  : len,
         msg  : msg
     });
     return this;
 };
 
-Constraint.prototype.matches = function(regex, msg) {
+Constraint.prototype.isMatch = function(regex, msg) {
     this.rules.push({
-        type  : 'matches',
+        type  : T_IS_MATCH,
         regex : regex,
         msg   : msg
     });
@@ -174,7 +203,7 @@ Constraint.prototype.matches = function(regex, msg) {
 
 Constraint.prototype.isUrl = function(msg) {
     this.rules.push({
-        type : 'isUrl',
+        type : T_IS_URL,
         msg  : msg
     });
     return this;
@@ -182,7 +211,7 @@ Constraint.prototype.isUrl = function(msg) {
 
 Constraint.prototype.isEmailAddress = function(msg) {
     this.rules.push({
-        type : 'isEmailAddress',
+        type : T_IS_EMAIL_ADDRESS,
         msg  : msg
     });
     return this;
@@ -190,7 +219,7 @@ Constraint.prototype.isEmailAddress = function(msg) {
 
 Constraint.prototype.isToken = function(msg) {
     this.rules.push({
-        type : 'isToken',
+        type : T_IS_TOKEN,
         msg  : msg
     });
     return this;
@@ -199,30 +228,30 @@ Constraint.prototype.isToken = function(msg) {
 // --------------------------------------------------------------------------------------------------------------------
 // conversions
 
-Constraint.prototype.trim = function() {
+Constraint.prototype.toTrim = function() {
     this.rules.push({
-        type : 'trim',
+        type : T_TO_TRIM,
     });
     return this;
 };
 
-Constraint.prototype.lowercase = function() {
+Constraint.prototype.toLowerCase = function() {
     this.rules.push({
-        type : 'lowercase',
+        type : T_TO_LOWER_CASE,
     });
     return this;
 };
 
-Constraint.prototype.uppercase = function() {
+Constraint.prototype.toUpperCase = function() {
     this.rules.push({
-        type : 'uppercase',
+        type : T_TO_UPPER_CASE,
     });
     return this;
 };
 
-Constraint.prototype.replace = function(a, b) {
+Constraint.prototype.toReplace = function(a, b) {
     this.rules.push({
-        type : 'replace',
+        type : T_TO_REPLACE,
         a : a,
         b : b,
     });
@@ -232,9 +261,17 @@ Constraint.prototype.replace = function(a, b) {
 // --------------------------------------------------------------------------------------------------------------------
 // coercions
 
+Constraint.prototype.toString = function(msg) {
+    this.rules.push({
+        type : T_TO_STRING,
+        msg  : msg,
+    });
+    return this;
+};
+
 Constraint.prototype.toInteger = function(msg) {
     this.rules.push({
-        type : 'toInteger',
+        type : T_TO_INTEGER,
         msg  : msg,
     });
     return this;
@@ -242,7 +279,7 @@ Constraint.prototype.toInteger = function(msg) {
 
 Constraint.prototype.toFloat = function(msg) {
     this.rules.push({
-        type : 'toFloat',
+        type : T_TO_FLOAT,
         msg  : msg,
     });
     return this;
@@ -250,7 +287,7 @@ Constraint.prototype.toFloat = function(msg) {
 
 Constraint.prototype.toBoolean = function(msg) {
     this.rules.push({
-        type : 'toBoolean',
+        type : T_TO_BOOLEAN,
         msg  : msg,
     });
     return this;
@@ -327,7 +364,7 @@ var validateParam = function(name, value, constraint) {
         var r = constraint.rules[i];
 
         // check all of the different constraints
-        if ( r.type === 'isString' ) {
+        if ( r.type === T_IS_STRING ) {
             if ( !_.isString(value) ) {
                 return {
                     ok  : false,
@@ -335,7 +372,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'isInteger' ) {
+        else if ( r.type === T_IS_INTEGER ) {
             if ( parseInt(value, 10) !== value ) {
                 return {
                     ok  : false,
@@ -343,7 +380,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'isFloat' ) {
+        else if ( r.type === T_IS_FLOAT ) {
             if ( typeof value !== 'number' ) {
                 return {
                     ok  : false,
@@ -351,7 +388,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'isBoolean' ) {
+        else if ( r.type === T_IS_BOOLEAN ) {
             if ( !_.isBoolean(value) ) {
                 return {
                     ok  : false,
@@ -359,7 +396,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'isDate' ) {
+        else if ( r.type === T_IS_DATE ) {
             if ( !_.isDate(value) ) {
                 return {
                     ok  : false,
@@ -367,7 +404,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'is' ) {
+        else if ( r.type === T_IS_EQUAL ) {
             if ( value !== r.value ) {
                 return {
                     ok  : false,
@@ -375,7 +412,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'gt' ) {
+        else if ( r.type === T_IS_GREATER_THAN ) {
             if ( value <= r.value ) {
                 return {
                     ok  : false,
@@ -383,7 +420,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'lt' ) {
+        else if ( r.type === T_IS_LESS_THAN ) {
             if ( value >= r.value ) {
                 return {
                     ok  : false,
@@ -391,7 +428,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'min' ) {
+        else if ( r.type === T_IS_MIN_VAL ) {
             if ( value < r.value ) {
                 return {
                     ok  : false,
@@ -399,7 +436,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'max' ) {
+        else if ( r.type === T_IS_MAX_VAL ) {
             if ( value > r.value ) {
                 return {
                     ok  : false,
@@ -407,7 +444,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'minLen' ) {
+        else if ( r.type === T_IS_MIN_LEN ) {
             if ( value.length < r.len ) {
                 return {
                     ok  : false,
@@ -415,7 +452,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'maxLen' ) {
+        else if ( r.type === T_IS_MAX_LEN ) {
             if ( value.length > r.len ) {
                 return {
                     ok  : false,
@@ -423,7 +460,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'matches' ) {
+        else if ( r.type === T_IS_MATCH ) {
             var m = value.match(r.regex);
             if ( !value.match(r.regex) ) {
                 return {
@@ -432,7 +469,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'isUrl' ) {
+        else if ( r.type === T_IS_URL ) {
             // ToDo: http://someweblog.com/url-regular-expression-javascript-link-shortener/
             // From: http://stackoverflow.com/questions/8188645/javascript-regex-to-match-a-url-in-a-field-of-text
             // * (http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?
@@ -443,7 +480,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'isEmailAddress' ) {
+        else if ( r.type === T_IS_EMAIL_ADDRESS ) {
             // Validating Email Addresses is Difficult!
             // ! $ & * - = ^ ` | ~ # % ' + / ? _ { }
             if ( !value.match(/^[A-Za-z0-9\._%+-]+@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/) ) {
@@ -453,7 +490,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'isToken' ) {
+        else if ( r.type === T_IS_TOKEN ) {
             // Tokens are like URI segments. Lowercase letters, numbers and dashes.
             if ( !value.match(/^[a-z0-9][a-z0-9-]*[a-z0-9]$/) ) {
                 return {
@@ -462,19 +499,22 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'trim' ) {
+        else if ( r.type === T_TO_TRIM ) {
             value = value.replace(/^\s+|\s+$/g,'')
         }
-        else if ( r.type === 'lowercase' ) {
+        else if ( r.type === T_TO_LOWER_CASE ) {
             value = value.toLowerCase();
         }
-        else if ( r.type === 'uppercase' ) {
+        else if ( r.type === T_TO_UPPER_CASE ) {
             value = value.toUpperCase();
         }
-        else if ( r.type === 'replace' ) {
+        else if ( r.type === T_TO_REPLACE ) {
             value = value.replace(r.a, r.b);
         }
-        else if ( r.type === 'toInteger' ) {
+        else if ( r.type === T_TO_STRING ) {
+            value = String(value);
+        }
+        else if ( r.type === T_TO_INTEGER ) {
             value = parseInt(value, 10);
             if ( Number.isNaN(value) ) {
                 return {
@@ -483,7 +523,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'toFloat' ) {
+        else if ( r.type === T_TO_FLOAT ) {
             value = parseFloat(value);
             if ( Number.isNaN(value) ) {
                 return {
@@ -492,7 +532,7 @@ var validateParam = function(name, value, constraint) {
                 };
             }
         }
-        else if ( r.type === 'toBoolean' ) {
+        else if ( r.type === T_TO_BOOLEAN ) {
             if ( _.isString(value) ) {
                 if ( value.toLowerCase() in valid.boolean ) {
                     value = valid.boolean[value.toLowerCase()];

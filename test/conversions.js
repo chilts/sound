@@ -3,11 +3,11 @@ var test = require("tape");
 var sound = require('../sound.js');
 
 var conversionsForStrings = {
-    username0 : sound().isString().trim().required().minLen(4),
-    username1 : sound().isString().trim().required().name('Username1'),
-    username2 : sound().isString().required().lowercase().name('Username2'),
-    username3 : sound().isString().required().replace('_', '-').name('Username3'),
-    username4 : sound().isString().trim().lowercase().required().replace(/_/g, '-').name('Username4'),
+    username0 : sound().isString().toTrim().isRequired().isMinLen(4),
+    username1 : sound().isString().toTrim().isRequired().setName('Username1'),
+    username2 : sound().isString().isRequired().toLowerCase().setName('Username2'),
+    username3 : sound().isString().isRequired().toReplace('_', '-').setName('Username3'),
+    username4 : sound().isString().toTrim().toLowerCase().isRequired().toReplace(/_/g, '-').setName('Username4'),
 };
 
 var tests = [

@@ -7,15 +7,15 @@ var tests = [
     {
         name : 'Default simple strings (1)',
         schema : {
-            greeting1 : sound().isString().default('hello'),
-            greeting2 : sound().isString().default('hi'),
-            greeting3 : sound().isString().default('Yo!'),
-            greeting4 : sound().isString().default('Wassup'),
+            greeting1 : sound().isString().hasDefault('hello'),
+            greeting2 : sound().isString().hasDefault('hi'),
+            greeting3 : sound().isString().hasDefault('Yo!'),
+            greeting4 : sound().isString().hasDefault('Wassup'),
 
-            greeting5 : sound().isString().default('hello').required(),
-            greeting6 : sound().isString().default('hi').required(),
-            greeting7 : sound().isString().default('Yo!').required(),
-            greeting8 : sound().isString().default('Wassup').required(),
+            greeting5 : sound().isString().hasDefault('hello').isRequired(),
+            greeting6 : sound().isString().hasDefault('hi').isRequired(),
+            greeting7 : sound().isString().hasDefault('Yo!').isRequired(),
+            greeting8 : sound().isString().hasDefault('Wassup').isRequired(),
         },
         params : {
             greeting1 : 'Alright?',
@@ -53,14 +53,14 @@ var tests = [
     {
         name : 'Convert strings to booleans, with defaults',
         schema : {
-            tall1  : sound().isString().default('true').toBoolean(),
-            small1 : sound().isString().default('on').toBoolean(),
-            wide1  : sound().isString().default('0').toBoolean(),
-            thin1  : sound().isString().default('f').toBoolean(),
-            tall2  : sound().isString().default('true').toBoolean(),
-            small2 : sound().isString().default('on').toBoolean(),
-            wide2  : sound().isString().default('0').toBoolean(),
-            thin2  : sound().isString().default('f').toBoolean(),
+            tall1  : sound().isString().hasDefault('true').toBoolean(),
+            small1 : sound().isString().hasDefault('on').toBoolean(),
+            wide1  : sound().isString().hasDefault('0').toBoolean(),
+            thin1  : sound().isString().hasDefault('f').toBoolean(),
+            tall2  : sound().isString().hasDefault('true').toBoolean(),
+            small2 : sound().isString().hasDefault('on').toBoolean(),
+            wide2  : sound().isString().hasDefault('0').toBoolean(),
+            thin2  : sound().isString().hasDefault('f').toBoolean(),
         },
         params : {
             tall1 : 'yes',

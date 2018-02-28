@@ -5,19 +5,19 @@ var sound = require('../sound.js');
 // two different ways of specifying the name of the parameter
 
 var namesSchema1 = {
-    username  : sound().isString().required().name('Username').minLen(4),
-    password  : sound().isString().required().name('Password').minLen(8),
-    numOfCars : sound().isInteger().required().name('Cars Owned').min(0),
-    pi        : sound().isFloat().required().name('PI'),
-    happy     : sound().isBoolean().required().name("'Are you happy?'"),
+    username  : sound().isString().isRequired().setName('Username').isMinLen(4),
+    password  : sound().isString().isRequired().setName('Password').isMinLen(8),
+    numOfCars : sound().isInteger().isRequired().setName('Cars Owned').isMinVal(0),
+    pi        : sound().isFloat().isRequired().setName('PI'),
+    happy     : sound().isBoolean().isRequired().setName("'Are you happy?'"),
 };
 
 var namesSchema2 = {
-    username  : sound('Username').isString().required().minLen(4),
-    password  : sound('Password').isString().required().minLen(8),
-    numOfCars : sound('Cars Owned').isInteger().required().min(0),
-    pi        : sound('PI').isFloat().required(),
-    happy     : sound("'Are you happy?'").isBoolean().required(),
+    username  : sound('Username').isString().isRequired().isMinLen(4),
+    password  : sound('Password').isString().isRequired().isMinLen(8),
+    numOfCars : sound('Cars Owned').isInteger().isRequired().isMinVal(0),
+    pi        : sound('PI').isFloat().isRequired(),
+    happy     : sound("'Are you happy?'").isBoolean().isRequired(),
 };
 
 var tests = [

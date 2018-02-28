@@ -3,13 +3,13 @@ var test = require("tape");
 var sound = require('../sound.js');
 
 var signup = {
-    username : sound().isString('letters and numbers only').lowercase().trim().required().isToken().minLen(3),
-    email    : sound().isString('should be an email address').trim().isEmailAddress(),
-    password : sound().isString('use at least 8 chars').required().minLen(8).maxLen(100),
+    username : sound().isString('letters and numbers only').toLowerCase().toTrim().isRequired().isToken().isMinLen(3),
+    email    : sound().isString('should be an email address').toTrim().isEmailAddress(),
+    password : sound().isString('use at least 8 chars').isRequired().isMinLen(8).isMaxLen(100),
 };
 
 var nullsBeGone = {
-    username  : sound().isString().required(),
+    username  : sound().isString().isRequired(),
     interests : sound().isString(),
 };
 
