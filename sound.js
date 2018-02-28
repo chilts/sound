@@ -332,27 +332,29 @@ sound.validate = function(arg, schema) {
 };
 
 var validateParam = function(name, value, constraint) {
-    // first thing to do is see if this param is required ... if not, and it's undefined then we get out of here
+    // first thing to do is see if this param needs a default
     if ( _.isUndefined(value) || _.isNull(value) || value === '' ) {
+        // check to see if a default was provided
         // set the default (if there is one)
-        if ( !_.isUndefined(constraint._default) ) {
-            value = constraint._default
-        }
-    }
-
-    // now check the value again
-    if ( _.isUndefined(value) || _.isNull(value) || value === '' ) {
-        if ( constraint._required ) {
-          // if we are required, then check to see if we can use a default
-            return {
-                ok  : false,
-                err : constraint._requiredMsg || name + ' is required',
-            };
+        if ( _.isUndefined(constraint._default) ) {
+            // no default provided, so check if this is required
+            if ( constraint._required ) {
+                // yes, required, so this fails
+                return {
+                    ok  : false,
+                    err : constraint._requiredMsg || name + ' is required',
+                };
+            }
+            else {
+                // not required, so this is okay
+                return {
+                    ok  : true,
+                };
+            }
         }
         else {
-            return {
-                ok  : true,
-            };
+            // we have a default, so set the value for later checking
+            value = constraint._default
         }
     }
     // else, we have a value, so keep checking things

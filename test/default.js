@@ -11,17 +11,23 @@ var tests = [
             greeting2 : sound().isString().hasDefault('hi'),
             greeting3 : sound().isString().hasDefault('Yo!'),
             greeting4 : sound().isString().hasDefault('Wassup'),
+            greetingA : sound().isString().hasDefault('Cheers'),
+            greetingB : sound().isString().hasDefault(''),
 
             greeting5 : sound().isString().hasDefault('hello').isRequired(),
             greeting6 : sound().isString().hasDefault('hi').isRequired(),
             greeting7 : sound().isString().hasDefault('Yo!').isRequired(),
             greeting8 : sound().isString().hasDefault('Wassup').isRequired(),
+            greetingC : sound().isString().hasDefault('Cheers').isRequired(),
+            greetingD : sound().isString().hasDefault('').isRequired(),
         },
         params : {
             greeting1 : 'Alright?',
             greeting2 : "G'Day",
             greeting5 : 'Alright?',
             greeting6 : "G'Day",
+            greetingA : '',
+            greetingB : '',
         },
         test : function(t, err, res) {
             t.ok(_.isObject(err), "is an object");
@@ -30,21 +36,29 @@ var tests = [
             t.ok( _.isUndefined(err.greeting2), "string passes");
             t.ok( _.isUndefined(err.greeting3), "string passes");
             t.ok( _.isUndefined(err.greeting4), "string passes");
+            t.ok( _.isUndefined(err.greetingA), "string passes");
+            t.ok( _.isUndefined(err.greetingB), "string passes");
 
             t.ok( _.isUndefined(err.greeting5), "string passes");
             t.ok( _.isUndefined(err.greeting6), "string passes");
             t.ok( _.isUndefined(err.greeting7), "string passes");
             t.ok( _.isUndefined(err.greeting8), "string passes");
+            t.ok( _.isUndefined(err.greetingC), "string passes");
+            t.ok( _.isUndefined(err.greetingD), "string passes");
 
             t.equal(res.greeting1, 'Alright?', "greeting1 takes the incoming value");
             t.equal(res.greeting2, "G'Day", "greeting2 takes the incoming value");
             t.equal(res.greeting3, 'Yo!', "greeting3 takes the default value");
             t.equal(res.greeting4, 'Wassup', "greeting4 takes the default value");
+            t.equal(res.greetingA, 'Cheers', "greetingA takes the default value");
+            t.equal(res.greetingB, '', "greetingB takes the default value");
 
             t.equal(res.greeting5, 'Alright?', "greeting5 takes the incoming value");
             t.equal(res.greeting6, "G'Day", "greeting6 takes the incoming value");
             t.equal(res.greeting7, 'Yo!', "greeting7 takes the default value");
             t.equal(res.greeting8, 'Wassup', "greeting8 takes the default value");
+            t.equal(res.greetingC, 'Cheers', "greetingC takes the default value");
+            t.equal(res.greetingD, '', "greetingD takes the default value");
 
             t.end();
         },
