@@ -1,41 +1,40 @@
 {
-    "name": "sound",
-    "description": "Make sure your data is sound! Validation and conversion library for Node.js.",
-    "version": "1.2.2",
-    "main": "sound.js",
-    "author": {
-        "name": "Andrew Chilton",
-        "email": "andychilton@gmail.com",
-        "url": "http://www.chilts.org/"
-    },
-    "homepage": "https://github.com/chilts/sound",
-    "contributors": [],
-    "dependencies": {
-        "prettier": "^1.11.0",
-        "underscore": "~1.4.x"
-    },
-    "devDependencies": {
-        "tape": "*"
-    },
-    "engines": {
-        "node": ">= 0.6.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/chilts/sound.git"
-    },
-    "bugs": {
-        "url": "http://github.com/chilts/sound/issues",
-        "mail": "andychilton@gmail.com"
-    },
-    "licenses": "MIT",
-    "keywords": [
-        "validate",
-        "validation",
-        "input",
-        "params"
-    ],
-    "scripts": {
-        "test": "tape test/*.js"
-    }
+  "name": "sound",
+  "description": "Make sure your data is sound! Validation and conversion library for Node.js.",
+  "version": "2.0.0",
+  "main": "sound.js",
+  "homepage": "https://github.com/chilts/sound",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "dependencies": {
+    "underscore": "~1.4.x"
+  },
+  "devDependencies": {
+    "tape": "*"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chilts/sound.git"
+  },
+  "bugs": {
+    "url": "http://github.com/chilts/sound/issues",
+    "mail": "andychilton@gmail.com"
+  },
+  "author": {
+    "name": "Andrew Chilton",
+    "email": "andychilton@gmail.com",
+    "url": "http://www.chilts.org/"
+  },
+  "contributors": [],
+  "keywords": [
+    "validate",
+    "validation",
+    "input",
+    "params"
+  ],
+  "licenses": "MIT"
 }
