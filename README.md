@@ -2,7 +2,52 @@ sound.js - make sure your data is sound!
 
 [![Build Status](https://travis-ci.org/appsattic/sound.png?branch=master)](https://travis-ci.org/appsattic/sound)
 
+## About ##
+
+Take an incoming form from the web (a single-level object of strings), convert and validate them, and use the output
+values.
+
+e.g. Take a web form of title and Markdown:
+
+```
+const schema = {
+  title : sound('title').isString().toTrim().isRequired().isMaxLen(256),
+  markdown : sound('body').hasDefault('').isString(),
+}
+```
+
+Here you can see that the title is required (after trimming) and can't be more than 256 chars long. The body can be
+left out but will be set to the empty string as a default.
+
+An input of:
+
+```
+{
+  title : ' Hello, World! ',
+}
+```
+
+Would give an output of:
+
+```
+{
+  ok : true,
+  arg : {
+    title : ' Hello, World! ',
+  },
+  val : {
+    title : 'Hello, World!',
+    body : '',
+  },
+  err : {},
+}
+```
+
+If `ok` is `false`, then `err` will contain errors related to each field.
+
 ## Synopsis ##
+
+
 
 ## Examples ##
 
