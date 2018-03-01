@@ -8,7 +8,7 @@
     "test": "tape test/*.js"
   },
   "dependencies": {
-    "underscore": "~1.4.x"
+    "underscore": "*"
   },
   "devDependencies": {
     "tape": "*"
