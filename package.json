@@ -3,19 +3,20 @@
   "description": "Make sure your data is sound! Validation and conversion library for Node.js.",
   "version": "2.2.0",
   "main": "sound.js",
-  "homepage": "https://github.com/chilts/sound",
   "scripts": {
     "test": "tape test/*.js"
   },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
   "dependencies": {
+    "isemail": "^3.1.3",
     "underscore": "*"
   },
   "devDependencies": {
     "tape": "*"
   },
-  "engines": {
-    "node": ">= 0.6.0"
-  },
+  "homepage": "https://github.com/chilts/sound",
   "repository": {
     "type": "git",
     "url": "git://github.com/chilts/sound.git"
@@ -24,17 +25,17 @@
     "url": "http://github.com/chilts/sound/issues",
     "mail": "andychilton@gmail.com"
   },
-  "author": {
-    "name": "Andrew Chilton",
-    "email": "andychilton@gmail.com",
-    "url": "http://www.chilts.org/"
-  },
-  "contributors": [],
   "keywords": [
     "validate",
     "validation",
     "input",
     "params"
   ],
-  "licenses": "MIT"
+  "author": {
+    "name": "Andrew Chilton",
+    "email": "andychilton@gmail.com",
+    "url": "http://www.chilts.org/"
+  },
+  "contributors": [],
+  "license": "MIT"
 }

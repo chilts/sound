@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 var _ = require('underscore');
+var isemail = require('isemail');
 
 var valid = {
     boolean : {
@@ -483,9 +484,13 @@ var validateParam = function(name, value, constraint) {
             }
         }
         else if ( r.type === T_IS_EMAIL_ADDRESS ) {
-            // Validating Email Addresses is Difficult!
-            // ! $ & * - = ^ ` | ~ # % ' + / ? _ { }
-            if ( !value.match(/^[A-Za-z0-9\._%+-]+@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/) ) {
+            // From npm.im/isemail, we're going to include TLD weirdnesses, but not quoted usernames or address literals.
+            //
+            // rfc5321TLD: 9,
+            // rfc5321TLDNumeric: 10,
+            // rfc5321QuotedString: 11,
+            // rfc5321AddressLiteral: 12,
+            if ( isemail.validate(value, { errorLevel: 10 }) !== 0 ) {
                 return {
                     ok  : false,
                     err : r.msg || name + ' should be an Email Address',

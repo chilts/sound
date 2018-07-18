@@ -48,6 +48,7 @@ var schemaForEmailAddresses = {
     email5 : sound().isString().isRequired().isEmailAddress(),
     email6 : sound().isString().isRequired().isEmailAddress(),
     email7 : sound().isString().isRequired().isEmailAddress(),
+    email8 : sound().isString().isRequired().isEmailAddress(),
 };
 
 var schemaForTokens = {
@@ -232,6 +233,7 @@ var tests = [
             email5 : 'andychilton+tagged@gmail.com',
             email6 : 'mchu4apc@fs2.ee.umist.ac.uk',
             email7 : 'me@t.co',
+            email8 : 'me@t.123',
         },
         test : function(t, err, res) {
             t.ok(_.isObject(err), "is an object");
@@ -242,8 +244,10 @@ var tests = [
             t.ok( _.isUndefined(err.email5), "email5 passes");
             t.ok( _.isUndefined(err.email6), "email6 passes");
             t.ok( _.isUndefined(err.email7), "email7 passes");
+            t.ok(!_.isUndefined(err.email8), "email8 fails");
 
             t.ok(err.email1, "email1 should be an Email Address");
+            t.ok(err.email8, "email8 should be an Email Address");
 
             t.end();
         },
