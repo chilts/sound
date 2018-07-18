@@ -45,6 +45,7 @@ const T_TO_UPPER_CASE    = 'toUpperCase';
 const T_TO_REPLACE       = 'toReplace';
 
 const T_IS_EQUAL         = 'isEqual';
+const T_IS_NOT_EMPTY     = 'isNotEmpty';
 const T_IS_MIN_LEN       = 'isMinLen';
 const T_IS_MAX_LEN       = 'isMaxLen';
 const T_IS_MIN_VAL       = 'isMinVal';
@@ -171,6 +172,14 @@ Constraint.prototype.isMaxVal = function(value, msg) {
         type  : T_IS_MAX_VAL,
         value : value,
         msg   : msg
+    });
+    return this;
+};
+
+Constraint.prototype.isNotEmpty = function(msg) {
+    this.rules.push({
+        type : T_IS_NOT_EMPTY,
+        msg  : msg
     });
     return this;
 };
@@ -444,6 +453,16 @@ var validateParam = function(name, value, constraint) {
                 return {
                     ok  : false,
                     err : r.msg || name + ' should be at most ' + r.value,
+                };
+            }
+        }
+        else if ( r.type === T_IS_NOT_EMPTY ) {
+            console.error('sdf:', value)
+            if ( value === '' ) {
+                console.error('sdf here')
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be provided',
                 };
             }
         }

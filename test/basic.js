@@ -12,6 +12,7 @@ var schemaForStrings = {
     username7 : sound().isString().isRequired().setName('Username7').isMinLen(3).isMaxLen(8),
     username8 : sound().isString().isRequired().setName('Username8').isMaxLen(8).isMinLen(3),
     username9 : sound().isString().isRequired().setName('Username9').isMaxLen(8).isMinLen(3),
+    usernameA : sound().isString().isRequired().isNotEmpty().setName('UsernameA'),
 };
 
 var schemaForIntegers = {
@@ -121,25 +122,28 @@ var tests = [
             username7 : 'mm',
             username8 : 'ok-here',
             username9 : 'too-long-here',
+            usernameA : '',
         },
         test : function(t, err, res) {
             t.ok(_.isObject(err), "is an object");
-            t.ok( _.isUndefined(err.username1), "string passes");
-            t.ok( _.isUndefined(err.username2), "string passes");
-            t.ok(!_.isUndefined(err.username3), "string passes");
-            t.ok( _.isUndefined(err.username4), "string passes");
-            t.ok(!_.isUndefined(err.username5), "string passes");
-            t.ok( _.isUndefined(err.username6), "string passes");
-            t.ok(!_.isUndefined(err.username7), "string passes");
-            t.ok( _.isUndefined(err.username8), "string passes");
-            t.ok(!_.isUndefined(err.username9), "string passes");
+            t.ok( _.isUndefined(err.username1), "username1 string passes");
+            t.ok( _.isUndefined(err.username2), "username2 string passes");
+            t.ok(!_.isUndefined(err.username3), "username3 string fails");
+            t.ok( _.isUndefined(err.username4), "username4 string passes");
+            t.ok(!_.isUndefined(err.username5), "username5 string fails");
+            t.ok( _.isUndefined(err.username6), "username6 string passes");
+            t.ok(!_.isUndefined(err.username7), "username7 string fails");
+            t.ok( _.isUndefined(err.username8), "username8 string passes");
+            t.ok(!_.isUndefined(err.username9), "username9 string fails");
+            t.ok(!_.isUndefined(err.usernameA), "usernameA string fails");
 
-            t.ok(err.username3, "username3 should be at least 3 characters'");
-            t.ok(err.username5, "username5 should be at most 8 characters'");
+            t.ok(err.username3, "username3 should be at least 3 characters");
+            t.ok(err.username5, "username5 should be at most 8 characters");
+            t.ok(err.usernameA, "usernameA should be provided");
 
             // for these, the first error should be these
-            t.ok(err.username7, "username7 should be at least 3 characters'");
-            t.ok(err.username9, "username9 should be at most 8 characters'");
+            t.ok(err.username7, "username7 should be at least 3 characters");
+            t.ok(err.username9, "username9 should be at most 8 characters");
 
             t.end();
         },

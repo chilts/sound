@@ -14,7 +14,7 @@
     "underscore": "*"
   },
   "devDependencies": {
-    "tape": "*"
+    "tape": "^4.9.1"
   },
   "homepage": "https://github.com/chilts/sound",
   "repository": {
