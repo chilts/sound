@@ -457,9 +457,7 @@ var validateParam = function(name, value, constraint) {
             }
         }
         else if ( r.type === T_IS_NOT_EMPTY ) {
-            console.error('sdf:', value)
             if ( value === '' ) {
-                console.error('sdf here')
                 return {
                     ok  : false,
                     err : r.msg || name + ' should be provided',
