@@ -35,6 +35,7 @@ const T_IS_BOOLEAN       = 'isBoolean';
 const T_IS_DATE          = 'isDate';
 
 const T_IS_URL           = 'isUrl';
+const T_IS_DOMAIN        = 'isDomain';
 const T_IS_EMAIL_ADDRESS = 'isEmailAddress';
 const T_IS_TOKEN         = 'isToken';
 const T_IS_MATCH         = 'isMatch';
@@ -214,6 +215,14 @@ Constraint.prototype.isMatch = function(regex, msg) {
 Constraint.prototype.isUrl = function(msg) {
     this.rules.push({
         type : T_IS_URL,
+        msg  : msg
+    });
+    return this;
+};
+
+Constraint.prototype.isDomain = function(msg) {
+    this.rules.push({
+        type : T_IS_DOMAIN,
         msg  : msg
     });
     return this;
@@ -497,6 +506,15 @@ var validateParam = function(name, value, constraint) {
                 return {
                     ok  : false,
                     err : r.msg || name + ' should be a URL and start with http:// or https://',
+                };
+            }
+        }
+        else if ( r.type === T_IS_DOMAIN ) {
+            // Copy part of the above T_IS_URL
+            if ( !value.match(/^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z])?\.)+[A-Za-z]{2,}$/) ) {
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' should be a FQDN such as example.com or my.example.org',
                 };
             }
         }

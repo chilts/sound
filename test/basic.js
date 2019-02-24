@@ -41,6 +41,32 @@ var schemaForUrls = {
     url7 : sound().isString().isRequired().isUrl(),
 };
 
+var schemaForDomains = {
+    domain1 : sound().isString().isRequired().isDomain(),
+    domain2 : sound().isString().isRequired().isDomain(),
+    domain3 : sound().isString().isRequired().isDomain(),
+    domain4 : sound().isString().isRequired().isDomain(),
+    domain5 : sound().isString().isRequired().isDomain(),
+    domain6 : sound().isString().isRequired().isDomain(),
+    domain7 : sound().isString().isRequired().isDomain(),
+    domain8 : sound().isString().isRequired().isDomain(),
+    domain9 : sound().isString().isRequired().isDomain(),
+    domain10 : sound().isString().isRequired().isDomain(),
+    domain11 : sound().isString().isRequired().isDomain(),
+    domain12 : sound().isString().isRequired().isDomain(),
+    domain13 : sound().isString().isRequired().isDomain(),
+    domain14 : sound().isString().isRequired().isDomain(),
+    domain15 : sound().isString().isRequired().isDomain(),
+    domain16 : sound().isString().isRequired().isDomain(),
+    domain17 : sound().isString().isRequired().isDomain(),
+    domain18 : sound().isString().isRequired().isDomain(),
+    domain19 : sound().isString().isRequired().isDomain(),
+    domain20 : sound().isString().isRequired().isDomain(),
+    domain21 : sound().isString().isRequired().isDomain(),
+    domain22 : sound().isString().isRequired().isDomain(),
+    domain23 : sound().isString().isRequired().isDomain(),
+};
+
 var schemaForEmailAddresses = {
     email1 : sound().isString().isRequired().isEmailAddress(),
     email2 : sound().isString().isRequired().isEmailAddress(),
@@ -221,6 +247,68 @@ var tests = [
             t.ok( _.isUndefined(err.url7), "url7 passes");
 
             t.ok(err.url5, "url5 should be a URL and start with http:// or https://");
+
+            t.end();
+        },
+    },
+
+    {
+        name : 'Domains',
+        schema : schemaForDomains,
+        params : {
+            domain1 : 'example.org',
+            domain2 : 'my.example.org',
+            domain3 : '1.cc', // doesn't make sure `cc` is a valid tld
+            domain4 : 'hello-world.info',
+            domain5 : 'my.app.development.example.com',
+            domain6 : 'localhost.localdomain',
+            domain7 : 'localhost',
+            domain8 : 'hello_world.info',
+            domain9 : '-.net',
+            domain10 : '',
+            domain11 : ' ',
+            domain12 : '*',
+            domain13 : '*.example.com',
+            domain14 : '!.com',
+            domain15 : '.com',
+            domain16 : 'example.',
+            domain17 : 'example.com.',
+            domain18 : 'http://example.com',
+            domain19 : 'me@example.com',
+            domain20 : '-another.com',
+            domain21 : 'another-.com',
+            domain22 : 'another.c-m',
+            domain23 : 'another.c',
+        },
+        test : function(t, err, res) {
+            console.log('asdf:', err)
+            console.log('asdf:', res)
+            t.ok(_.isObject(err), "is an object");
+            t.ok( _.isUndefined(err.domain1), "domain1 passes");
+            t.ok( _.isUndefined(err.domain2), "domain2 passes");
+            t.ok( _.isUndefined(err.domain3), "domain3 passes");
+            t.ok( _.isUndefined(err.domain4), "domain4 passes");
+            t.ok( _.isUndefined(err.domain5), "domain5 passes");
+            t.ok( _.isUndefined(err.domain6), "domain6 passes"); // 'coz we want domain names
+            t.ok(!_.isUndefined(err.domain7), "domain7 fails");
+            t.ok(!_.isUndefined(err.domain8), "domain8 fails");
+            t.ok(!_.isUndefined(err.domain9), "domain9 fails");
+            t.ok(!_.isUndefined(err.domain10), "domain10 fails");
+            t.ok(!_.isUndefined(err.domain11), "domain11 fails");
+            t.ok(!_.isUndefined(err.domain12), "domain12 fails");
+            t.ok(!_.isUndefined(err.domain13), "domain13 fails");
+            t.ok(!_.isUndefined(err.domain14), "domain14 fails");
+            t.ok(!_.isUndefined(err.domain15), "domain15 fails");
+            t.ok(!_.isUndefined(err.domain16), "domain16 fails");
+            t.ok(!_.isUndefined(err.domain17), "domain17 fails");
+            t.ok(!_.isUndefined(err.domain18), "domain18 fails");
+            t.ok(!_.isUndefined(err.domain19), "domain19 fails");
+            t.ok(!_.isUndefined(err.domain20), "domain20 fails");
+            t.ok(!_.isUndefined(err.domain21), "domain21 fails");
+            t.ok(!_.isUndefined(err.domain22), "domain22 fails");
+            t.ok(!_.isUndefined(err.domain22), "domain23 fails");
+
+            t.ok(err.domain7, "domain7 should be a FQDN such as example.com or my.example.org");
 
             t.end();
         },
