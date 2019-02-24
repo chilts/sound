@@ -1,7 +1,7 @@
 {
   "name": "sound",
   "description": "Make sure your data is sound! Validation and conversion library for Node.js.",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "main": "sound.js",
   "scripts": {
     "test": "tape test/*.js"
@@ -16,13 +16,13 @@
   "devDependencies": {
     "tape": "^4.9.1"
   },
-  "homepage": "https://github.com/chilts/sound",
+  "homepage": "https://gitlab.com/chilts/sound",
   "repository": {
     "type": "git",
-    "url": "git://github.com/chilts/sound.git"
+    "url": "git://gitlab.com/chilts/sound.git"
   },
   "bugs": {
-    "url": "http://github.com/chilts/sound/issues",
+    "url": "http://gitlab.com/chilts/sound/issues",
     "mail": "andychilton@gmail.com"
   },
   "keywords": [
