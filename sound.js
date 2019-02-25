@@ -511,7 +511,7 @@ var validateParam = function(name, value, constraint) {
         }
         else if ( r.type === T_IS_DOMAIN ) {
             // Copy part of the above T_IS_URL
-            if ( !value.match(/^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z])?\.)+[A-Za-z]{2,}$/) ) {
+            if ( !value.match(/^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$/) ) {
                 return {
                     ok  : false,
                     err : r.msg || name + ' should be a FQDN such as example.com or my.example.org',

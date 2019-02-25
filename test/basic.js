@@ -65,6 +65,7 @@ var schemaForDomains = {
     domain21 : sound().isString().isRequired().isDomain(),
     domain22 : sound().isString().isRequired().isDomain(),
     domain23 : sound().isString().isRequired().isDomain(),
+    domain24 : sound().isString().isRequired().isDomain(),
 };
 
 var schemaForEmailAddresses = {
@@ -279,6 +280,7 @@ var tests = [
             domain21 : 'another-.com',
             domain22 : 'another.c-m',
             domain23 : 'another.c',
+            domain24 : 'status-2345.example.com',
         },
         test : function(t, err, res) {
             console.log('asdf:', err)
@@ -306,7 +308,8 @@ var tests = [
             t.ok(!_.isUndefined(err.domain20), "domain20 fails");
             t.ok(!_.isUndefined(err.domain21), "domain21 fails");
             t.ok(!_.isUndefined(err.domain22), "domain22 fails");
-            t.ok(!_.isUndefined(err.domain22), "domain23 fails");
+            t.ok(!_.isUndefined(err.domain23), "domain23 fails");
+            t.ok( _.isUndefined(err.domain24), "domain24 passes");
 
             t.ok(err.domain7, "domain7 should be a FQDN such as example.com or my.example.org");
 
