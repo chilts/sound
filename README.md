@@ -62,6 +62,7 @@ var schema = {
     isAdmin  : sound().isString().isRequired().toBoolean().isBoolean(),
     dob      : sound().isDate(), // accepts 'yyyy-mm-dd'
     agree    : sound().isString().toBoolean().isEqual(true), // make sure they tick T&C's
+    color    : sound().isString().toLowerCase().toTrim().isRequired().isEnum([ 'red', 'green', 'blue' ]),
 };
 
 var params = {

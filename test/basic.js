@@ -100,6 +100,17 @@ var schemaForMatches = {
     favColour2 : sound().isString().isMatch(/^(red|green|blue)$/),
 };
 
+var schemaForEnums = {
+    username : sound().isString().isRequired(),
+    favColour1 : sound().isString().isEnum([ 'red', 'green', 'blue' ]),
+    favColour2 : sound().isString().isEnum([ 'red', 'green', 'blue' ]),
+    favColour3 : sound().isString().isEnum([ 'red', 'green', 'blue' ]),
+    favColour4 : sound().isString().isEnum([ 'red', 'green', 'blue' ]),
+    favColour5 : sound().isString().isEnum([ 'red', 'green', 'blue' ]),
+    favColour6 : sound().isString().toLowerCase().toTrim().isRequired().isEnum([ 'red', 'green', 'blue' ]),
+    favColour7 : sound().isString().isRequired().isEnum([ 'red', 'green', 'blue' ]),
+};
+
 var tests = [
 
     {
@@ -164,13 +175,13 @@ var tests = [
             t.ok(!_.isUndefined(err.username9), "username9 string fails");
             t.ok(!_.isUndefined(err.usernameA), "usernameA string fails");
 
-            t.ok(err.username3, "username3 should be at least 3 characters");
-            t.ok(err.username5, "username5 should be at most 8 characters");
-            t.ok(err.usernameA, "usernameA should be provided");
+            t.equal(err.username3, "Username3 should be at least 3 characters");
+            t.equal(err.username5, "Username5 should be at most 8 characters");
+            t.equal(err.usernameA, "UsernameA is required");
 
             // for these, the first error should be these
-            t.ok(err.username7, "username7 should be at least 3 characters");
-            t.ok(err.username9, "username9 should be at most 8 characters");
+            t.equal(err.username7, "Username7 should be at least 3 characters");
+            t.equal(err.username9, "Username9 should be at most 8 characters");
 
             t.end();
         },
@@ -210,16 +221,16 @@ var tests = [
             t.ok( _.isUndefined(err.int12), "integer passes");
             t.ok(!_.isUndefined(err.int13), "integer passes");
 
-            t.ok(err.int3, "int3 should be at least 3'");
-            t.ok(err.int5, "int5 should be at most 8'");
+            t.equal(err.int3, "Int3 should be at least 3");
+            t.equal(err.int5, "Int5 should be at most 8");
 
             // for these, the first error should be these
-            t.ok(err.int7, "int7 should be at least 3'");
-            t.ok(err.int9, "int9 should be at most 8'");
+            t.equal(err.int7, "Int7 should be at least 3");
+            t.equal(err.int9, "Int9 should be at most 8");
 
             // for these, the first error should be these
-            t.ok(err.int11, "int11 should be greater than 4'");
-            t.ok(err.int13, "int13 should be less than 8'");
+            t.equal(err.int11, "Int11 should be greater than 3");
+            t.equal(err.int13, "Int13 should be less than 8");
 
             t.end();
         },
@@ -247,7 +258,8 @@ var tests = [
             t.ok(!_.isUndefined(err.url6), "url6 fails"); // 'coz we want domain names
             t.ok( _.isUndefined(err.url7), "url7 passes");
 
-            t.ok(err.url5, "url5 should be a URL and start with http:// or https://");
+            t.equal(err.url5, "url5 should be a URL and start with http:// or https://");
+            t.equal(err.url6, "url6 should be a URL and start with http:// or https://");
 
             t.end();
         },
@@ -311,7 +323,7 @@ var tests = [
             t.ok(!_.isUndefined(err.domain23), "domain23 fails");
             t.ok( _.isUndefined(err.domain24), "domain24 passes");
 
-            t.ok(err.domain7, "domain7 should be a FQDN such as example.com or my.example.org");
+            t.equal(err.domain7, "domain7 should be a FQDN such as example.com or my.example.org");
 
             t.end();
         },
@@ -341,8 +353,8 @@ var tests = [
             t.ok( _.isUndefined(err.email7), "email7 passes");
             t.ok(!_.isUndefined(err.email8), "email8 fails");
 
-            t.ok(err.email1, "email1 should be an Email Address");
-            t.ok(err.email8, "email8 should be an Email Address");
+            t.equal(err.email1, "email1 is required");
+            t.equal(err.email8, "email8 should be an Email Address");
 
             t.end();
         },
@@ -370,7 +382,7 @@ var tests = [
             t.ok(!_.isUndefined(err.tok6), "tok6 fails");
             t.ok(!_.isUndefined(err.tok7), "tok7 fails");
 
-            t.ok(err.tok3, "tok3 should start and end with letters/numbers and contain only lowercase letters, numbers and dashes");
+            t.equal(err.tok3, "tok3 should start and end with letters/numbers and contain only lowercase letters, numbers and dashes");
 
             t.end();
         },
@@ -405,7 +417,43 @@ var tests = [
             t.ok( _.isUndefined(err.favColour1), "red is ok");
             t.ok(!_.isUndefined(err.favColour2), "purple is not ok");
 
-            t.ok(err.favColour2, "favColour2 does not validate");
+            t.equal(err.favColour2, "favColour2 is not valid");
+
+            t.end();
+        },
+    },
+
+    {
+        name : 'Test for .isEnum()',
+        schema : schemaForEnums,
+        params : {
+            username : 'chilts',
+            favColour1 : 'blue',
+            favColour2 : 'pink',
+            favColour3 : ' ',
+            favColour4 : 'Red',
+            favColour5 : true,
+            favColour6 : '  RED  ',
+            favColour7 : '',
+        },
+        test : function(t, err, res) {
+            t.ok(_.isObject(err), "is an object");
+
+            console.log('err:', err)
+            t.ok( _.isUndefined(err.username), "username is correct");
+            t.ok( _.isUndefined(err.favColour1), "'red' is ok");
+            t.ok(!_.isUndefined(err.favColour2), "'purple' is not ok");
+            t.ok(!_.isUndefined(err.favColour3), "' ' is not ok");
+            t.ok(!_.isUndefined(err.favColour4), "'Red' is not ok");
+            t.ok(!_.isUndefined(err.favColour5), "true is not ok");
+            t.ok( _.isUndefined(err.favColour6), "'  RED  ' is ok");
+            t.ok(!_.isUndefined(err.favColour7), "favColour7 is required");
+
+            t.equal(err.favColour2, "favColour2 is not a valid value");
+            t.equal(err.favColour3, "favColour3 is not a valid value");
+            t.equal(err.favColour4, "favColour4 is not a valid value");
+            t.equal(err.favColour5, "favColour5 should be a string");
+            t.equal(err.favColour7, "favColour7 is required");
 
             t.end();
         },

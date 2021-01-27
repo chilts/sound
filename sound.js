@@ -39,6 +39,7 @@ const T_IS_DOMAIN        = 'isDomain';
 const T_IS_EMAIL_ADDRESS = 'isEmailAddress';
 const T_IS_TOKEN         = 'isToken';
 const T_IS_MATCH         = 'isMatch';
+const T_IS_ENUM          = 'isEnum';
 
 const T_TO_TRIM          = 'toTrim';
 const T_TO_LOWER_CASE    = 'toLowerCase';
@@ -208,6 +209,18 @@ Constraint.prototype.isMatch = function(regex, msg) {
         type  : T_IS_MATCH,
         regex : regex,
         msg   : msg
+    });
+    return this;
+};
+
+Constraint.prototype.isEnum = function(values, msg) {
+    const value = {}
+    values.forEach(v => value[v] = true)
+    this.rules.push({
+        type   : T_IS_ENUM,
+        values : values,
+        value  : value,
+        msg    : msg
     });
     return this;
 };
@@ -494,7 +507,15 @@ var validateParam = function(name, value, constraint) {
             if ( !value.match(r.regex) ) {
                 return {
                     ok  : false,
-                    err : r.msg || name + ' does not validate',
+                    err : r.msg || name + ' is not valid',
+                };
+            }
+        }
+        else if ( r.type === T_IS_ENUM ) {
+            if ( !(value in r.value) ) {
+                return {
+                    ok  : false,
+                    err : r.msg || name + ' is not a valid value',
                 };
             }
         }
