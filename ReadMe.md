@@ -37,13 +37,17 @@ const user = {
 const check = sound.validate(params, schema)
 if ( check.ok ) {
   // everything validated ... params contained in `check.val`
+  // e.g. { username: 'chilts', password: '12345678', age: 15 }
 }
 else {
   // something failed validation ... errors contained in `check.err`
+  // e.g. { username: 'username is required', password: 'password should be at least 8 characters', age: 'age should be at least 13' }
 }
 ```
 
 ## Examples ##
+
+An example schema for a user, with various properties to show you different aspects of `sound`:
 
 ```
 const schema = {
@@ -66,35 +70,35 @@ const params = {
   agree : 'on', // will convert to true
 }
 
-const out = sound.validate(params, schema)
-if ( out.ok ) {
-  // everything validated ... params contained in `out.val`
+const check = sound.validate(params, schema)
+if ( check.ok ) {
+  // everything validated ... params contained in `check.val`
 }
 else {
-  // something failed validation ... errors contained in `out.err`
+  // something failed validation ... errors contained in `check.err`
 }
 ```
 
 If anything fails validation, then err will be an object with keys set to each field for each error. Only one error per
 field in the schema will be reported.
 
-If no failures are detected, err is just `{}`. You need to check `out.ok` to see if validation passed or failed.
+If no failures are detected, err is just `{}`. You need to check `checks.ok` to see if validation passed or failed.
 
 ```
-const out = sound.validate(params1, schema)
-if ( !out.ok ) {
-  // something failed, check the keys in `out.err.*`
+const check = sound.validate(params1, schema)
+if ( !check.ok ) {
+  // something failed, check the keys in `check.err.*`
   ...
   return
 }
 
-// all ok
+// all ok, the valid (and perhaps converted) values are in `check.val.*`
 ```
 
 An error may look like:
 
 ```
-{
+check.err: {
   password: 'Password should be at least 8 characters'
   logins: 'Logins should be of type integer',
   pi: 'PI should be of type float',
@@ -102,9 +106,20 @@ An error may look like:
 }
 ```
 
+A valid value may look like:
+
+```
+check.val: {
+  username: 'chilts'
+  password: 'abcdefgh'
+  email: 'me@example.com',
+  agree: true,
+}
+```
+
 ## Unknown Params ##
 
-Only params that we know about are passed back as `out.val`.
+Only params that we know about are passed back as `check.val`.
 
 ## Other Validation Libraries ##
 
@@ -113,7 +128,38 @@ don't want to list all of the errors at the top of a form, nor do I know which o
 pick and choose. I want the err to be an object with the only keys set to be to ones that fail.
 
 Currently 'sound' only reports the first error it encounters with each field and it is likely to stay this way (due to
-problem and overlap required to keep trying every test even if the first one has failed).
+the problem and overlap required to keep trying every test even if the first one has failed).
+
+## Changelog ##
+
+* v3.0.0 (2022-07-19)
+  * switch from CommonJS to ESModules
+  * modernise the codebase
+  * use eslint to check style (now 2 space indent, no semi-colons)
+* v2.7.0 (2021-01-21)
+* v2.6.1 (2019-02-25)
+* v2.6.0 (2019-02-25)
+* v2.5.0 (2018-07-19)
+* v2.4.0 (2018-07-19)
+* v2.3.0 (2018-07-19)
+* v2.2.0 (2018-03-01)
+* v2.1.0 (2018-03-01)
+* v2.0.0 (2018-03-01)
+* v1.2.2 (2018-02-28)
+* v1.2.1 (2015-05-26)
+* v1.2.0 (2014-07-30)
+* v1.1.0 (2014-06-28)
+* v1.0.1 (2014-06-28)
+* v1.0.0 (2014-06-28)
+* v0.3.3 (2014-06-28)
+* v0.3.2 (2014-06-28)
+* v0.3.1 (2014-01-02)
+* v0.3.0 (2014-01-02)
+* v0.2.2 (2013-04-15)
+* v0.2.1 (2013-04-15)
+* v0.2.0 (2013-04-15)
+* v0.1.0 (2013-02-01)
+  * first release
 
 ## Author ##
 
