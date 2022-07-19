@@ -10,10 +10,10 @@
 //
 // --------------------------------------------------------------------------------------------------------------------
 
-var _ = require('underscore');
-var isemail = require('isemail');
+const _ = require('underscore');
+const isemail = require('isemail');
 
-var valid = {
+const valid = {
     boolean : {
         'true'  : true,
         'false' : false,
@@ -62,7 +62,7 @@ const T_TO_BOOLEAN       = 'toBoolean';
 
 // --------------------------------------------------------------------------------------------------------------------
 
-var Constraint = function(name) {
+const Constraint = function(name) {
     this._name = name;
     this._required = false;
     this._requiredMsg = undefined;
@@ -328,21 +328,21 @@ Constraint.prototype.toBoolean = function(msg) {
 // --------------------------------------------------------------------------------------------------------------------
 // sound itself (for the constraints) and it's only function for validation
 
-var sound = function(name) {
+const sound = function(name) {
     return new Constraint(name);
 };
 
 sound.validate = function(arg, schema) {
-    var val = {};
-    var err = {};
-    var ok = true;
+    const val = {};
+    const err = {};
+    let ok = true;
 
     // go through each property of the schema (we ignore all others)
-    var keys = Object.keys(schema);
+    const keys = Object.keys(schema);
     keys.forEach(function(key, i) {
         // validate the arg against it's own constraints in the schema
         // Note: sound.validateParam(name, value, schema, fn)
-        var validation = validateParam(schema[key]._name || key, arg[key], schema[key]);
+        const validation = validateParam(schema[key]._name || key, arg[key], schema[key]);
         if ( validation.ok ) {
             // don't copy over nulls which appear if the arg doesn't have it
             if (typeof validation.val !== 'undefined' ) {
@@ -363,7 +363,7 @@ sound.validate = function(arg, schema) {
     };
 };
 
-var validateParam = function(name, value, constraint) {
+const validateParam = function(name, value, constraint) {
     // first thing to do is see if this param needs a default
     if ( _.isUndefined(value) || _.isNull(value) || value === '' ) {
         // check to see if a default was provided
@@ -391,11 +391,9 @@ var validateParam = function(name, value, constraint) {
     }
     // else, we have a value, so keep checking things
 
-    var err;
-
     // now, loop through all the constraints
-    for(var i = 0; i < constraint.rules.length; i++ ) {
-        var r = constraint.rules[i];
+    for ( let i = 0; i < constraint.rules.length; i++ ) {
+        const r = constraint.rules[i];
 
         // check all of the different constraints
         if ( r.type === T_IS_STRING ) {
@@ -503,7 +501,7 @@ var validateParam = function(name, value, constraint) {
             }
         }
         else if ( r.type === T_IS_MATCH ) {
-            var m = value.match(r.regex);
+            const m = value.match(r.regex);
             if ( !value.match(r.regex) ) {
                 return {
                     ok  : false,
