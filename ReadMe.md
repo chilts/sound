@@ -1,6 +1,6 @@
 sound.js - make sure your data is sound!
 
-[![Build Status](https://travis-ci.org/appsattic/sound.png?branch=master)](https://travis-ci.org/appsattic/sound)
+[![Build Status](https://travis-ci.org/chilts/sound.png?branch=master)](https://travis-ci.org/chilts/sound)
 
 ## About ##
 
