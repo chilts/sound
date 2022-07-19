@@ -2,7 +2,7 @@ import * as _ from 'underscore'
 import test from 'tape'
 import sound from '../sound.js'
 
-var coercionsForStrings = {
+const coercionsForStrings = {
   percentage0 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),
   percentage1 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),
   percentage2 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),
@@ -11,7 +11,7 @@ var coercionsForStrings = {
   percentage5 : sound().isString().isRequired().toInteger().isMinVal(0).isMaxVal(100),
 }
 
-var coercionsToBooleans = {
+const coercionsToBooleans = {
   bool0 : sound().isInteger().toBoolean(),
   bool1 : sound().isInteger().toBoolean(),
   bool2 : sound().isString().toTrim().toBoolean(),
@@ -25,7 +25,7 @@ var coercionsToBooleans = {
   bool10 : sound().isString().toTrim().toBoolean(),
 }
 
-var coercionsToFloats = {
+const coercionsToFloats = {
   float0 : sound().toFloat(),
   float1 : sound().toFloat(),
   float2 : sound().toFloat(),
@@ -36,7 +36,7 @@ var coercionsToFloats = {
   float7 : sound().toFloat(),
 }
 
-var tests = [
+const tests = [
 
   {
     name : 'Coercions for Strings to Integers',
@@ -162,7 +162,7 @@ var tests = [
 
 tests.forEach(function(v) {
   test(v.name, function(t) {
-    var res = sound.validate(v.params, v.schema)
+    const res = sound.validate(v.params, v.schema)
     v.test(t, res.err, res.val)
   })
 })

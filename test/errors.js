@@ -2,7 +2,7 @@ import * as _ from 'underscore'
 import test from 'tape'
 import sound from '../sound.js'
 
-var requiredSchema = {
+const requiredSchema = {
   username : sound().isString().isRequired('a'),
   logins   : sound().isInteger().isRequired('b'),
   isHuman  : sound().isBoolean().isRequired('c'),
@@ -11,7 +11,7 @@ var requiredSchema = {
   col2     : sound().isString().isRequired('f').isEnum([ 'red', 'green', 'blue' ]),
 }
 
-var errorsSchema = {
+const errorsSchema = {
   username1 : sound().isString().isRequired().toLowerCase().isMatch(/^[a-z][a-z0-9-]{3,}$/, 'Username should only contain letters, numbers and the dash character.'),
   username2 : sound().isString().isRequired().isMinLen(3, 'Username must be at least 3 characters long'),
   username3 : sound().isString().isRequired().isMaxLen(8, 'Must be shorter than 8 chars.'),
@@ -20,7 +20,7 @@ var errorsSchema = {
   col2      : sound().isString().isEnum([ 'red', 'green', 'blue' ], "Must be one of 'red', 'green', or 'blue'."),
 }
 
-var tests = [
+const tests = [
 
   {
     name : "Error messages if .isRequired() isn't fulfilled",
@@ -86,7 +86,7 @@ var tests = [
 
 tests.forEach(function(v) {
   test(v.name, function(t) {
-    var res = sound.validate(v.params, v.schema)
+    const res = sound.validate(v.params, v.schema)
     v.test(t, res.err, res.val)
   })
 })

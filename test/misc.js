@@ -2,18 +2,18 @@ import * as _ from 'underscore'
 import test from 'tape'
 import sound from '../sound.js'
 
-var signup = {
+const signup = {
   username : sound().isString('letters and numbers only').toLowerCase().toTrim().isRequired().isToken().isMinLen(3),
   email    : sound().isString('should be an email address').toTrim().isEmailAddress(),
   password : sound().isString('use at least 8 chars').isRequired().isMinLen(8).isMaxLen(100),
 }
 
-var nullsBeGone = {
+const nullsBeGone = {
   username  : sound().isString().isRequired(),
   interests : sound().isString(),
 }
 
-var tests = [
+const tests = [
 
   {
     name : 'Validate username, email and password',
@@ -87,7 +87,7 @@ var tests = [
 
 tests.forEach(function(v) {
   test(v.name, function(t) {
-    var res = sound.validate(v.params, v.schema)
+    const res = sound.validate(v.params, v.schema)
     v.test(t, res)
   })
 })

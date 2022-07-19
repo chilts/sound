@@ -1,4 +1,7 @@
-node_modules/
+/coverage/
+/node_modules/
+
 test-*.js
 non-git/
+*.log
 *~

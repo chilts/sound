@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "npm run eslint && npm run tape",
-    "tape": "tape test/*.js",
+    "tape": "c8 tape test/*.js",
     "eslint": "eslint **/*.js",
     "eslint-fix": "eslint --fix **/*.js"
   },
@@ -24,6 +24,7 @@
     "underscore": "^1.13.4"
   },
   "devDependencies": {
+    "c8": "^7.11.3",
     "eslint": "^8.20.0",
     "tape": "^5.5.3"
   },

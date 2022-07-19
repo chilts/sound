@@ -2,7 +2,7 @@ import * as _ from 'underscore'
 import test from 'tape'
 import sound from '../sound.js'
 
-var tests = [
+const tests = [
 
   {
     name : 'Default simple strings (1)',
@@ -113,7 +113,7 @@ var tests = [
 
 tests.forEach(function(v) {
   test(v.name, function(t) {
-    var res = sound.validate(v.params, v.schema)
+    const res = sound.validate(v.params, v.schema)
     v.test(t, res.err, res.val)
   })
 })

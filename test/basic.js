@@ -2,7 +2,7 @@ import * as _ from 'underscore'
 import test from 'tape'
 import sound from '../sound.js'
 
-var schemaForStrings = {
+const schemaForStrings = {
   username1 : sound().isString().isRequired().setName('Username1'),
   username2 : sound().isString().isRequired().setName('Username2').isMinLen(3),
   username3 : sound().isString().isRequired().setName('Username3').isMinLen(3),
@@ -15,7 +15,7 @@ var schemaForStrings = {
   usernameA : sound().isString().isRequired().isNotEmpty().setName('UsernameA'),
 }
 
-var schemaForIntegers = {
+const schemaForIntegers = {
   int1 : sound().isInteger().isRequired().setName('Int1'),
   int2 : sound().isInteger().isRequired().setName('Int2').isMinVal(3),
   int3 : sound().isInteger().isRequired().setName('Int3').isMinVal(3),
@@ -31,7 +31,7 @@ var schemaForIntegers = {
   int13 : sound().isInteger().isRequired().setName('Int13').isLessThan(8),
 }
 
-var schemaForUrls = {
+const schemaForUrls = {
   url1 : sound().isString().isRequired().isUrl(),
   url2 : sound().isString().isRequired().isUrl(),
   url3 : sound().isString().isRequired().isUrl(),
@@ -41,7 +41,7 @@ var schemaForUrls = {
   url7 : sound().isString().isRequired().isUrl(),
 }
 
-var schemaForDomains = {
+const schemaForDomains = {
   domain1 : sound().isString().isRequired().isDomain(),
   domain2 : sound().isString().isRequired().isDomain(),
   domain3 : sound().isString().isRequired().isDomain(),
@@ -68,7 +68,7 @@ var schemaForDomains = {
   domain24 : sound().isString().isRequired().isDomain(),
 }
 
-var schemaForEmailAddresses = {
+const schemaForEmailAddresses = {
   email1 : sound().isString().isRequired().isEmailAddress(),
   email2 : sound().isString().isRequired().isEmailAddress(),
   email3 : sound().isString().isRequired().isEmailAddress(),
@@ -79,7 +79,7 @@ var schemaForEmailAddresses = {
   email8 : sound().isString().isRequired().isEmailAddress(),
 }
 
-var schemaForTokens = {
+const schemaForTokens = {
   tok1 : sound().isString().isRequired().isToken(),
   tok2 : sound().isString().isRequired().isToken(),
   tok3 : sound().isString().isRequired().isToken(),
@@ -89,18 +89,18 @@ var schemaForTokens = {
   tok7 : sound().isString().isRequired().isToken(),
 }
 
-var schemaForUrlShortener = {
+const schemaForUrlShortener = {
   title : sound().isString().isRequired(),
   url   : sound().isString().isRequired().isUrl(),
 }
 
-var schemaForMatches = {
+const schemaForMatches = {
   username : sound().isString().isRequired(),
   favColour1 : sound().isString().isMatch(/^(red|green|blue)$/),
   favColour2 : sound().isString().isMatch(/^(red|green|blue)$/),
 }
 
-var schemaForEnums = {
+const schemaForEnums = {
   username : sound().isString().isRequired(),
   favColour1 : sound().isString().isEnum([ 'red', 'green', 'blue' ]),
   favColour2 : sound().isString().isEnum([ 'red', 'green', 'blue' ]),
@@ -111,7 +111,7 @@ var schemaForEnums = {
   favColour7 : sound().isString().isRequired().isEnum([ 'red', 'green', 'blue' ]),
 }
 
-var tests = [
+const tests = [
 
   {
     name : 'Validate simple types (isRequired)',
@@ -437,7 +437,6 @@ var tests = [
     test : function(t, err) {
       t.ok(_.isObject(err), "is an object")
 
-      console.log('err:', err)
       t.ok( _.isUndefined(err.username), "username is correct")
       t.ok( _.isUndefined(err.favColour1), "'red' is ok")
       t.ok(!_.isUndefined(err.favColour2), "'purple' is not ok")
@@ -461,7 +460,7 @@ var tests = [
 
 tests.forEach(function(v) {
   test(v.name, function(t) {
-    var res = sound.validate(v.params, v.schema)
+    const res = sound.validate(v.params, v.schema)
     v.test(t, res.err, res.val)
   })
 })

@@ -4,7 +4,7 @@ import sound from '../sound.js'
 
 // two different ways of specifying the name of the parameter
 
-var namesSchema1 = {
+const namesSchema1 = {
   username  : sound().isString().isRequired().setName('Username').isMinLen(4),
   password  : sound().isString().isRequired().setName('Password').isMinLen(8),
   numOfCars : sound().isInteger().isRequired().setName('Cars Owned').isMinVal(0),
@@ -13,7 +13,7 @@ var namesSchema1 = {
   col       : sound().isString().isRequired().setName("Colour").isEnum([ 'red', 'green', 'blue' ]),
 }
 
-var namesSchema2 = {
+const namesSchema2 = {
   username  : sound('Username').isString().isRequired().isMinLen(4),
   password  : sound('Password').isString().isRequired().isMinLen(8),
   numOfCars : sound('Cars Owned').isInteger().isRequired().isMinVal(0),
@@ -22,7 +22,7 @@ var namesSchema2 = {
   col       : sound("Colour").isString().isRequired().isEnum([ 'red', 'green', 'blue' ]),
 }
 
-var tests = [
+const tests = [
 
   {
     name : 'Names for each parameter, required',
@@ -120,7 +120,7 @@ var tests = [
 
 tests.forEach(function(v) {
   test(v.name, function(t) {
-    var res = sound.validate(v.params, v.schema)
+    const res = sound.validate(v.params, v.schema)
     v.test(t, res.err, res.val)
   })
 })

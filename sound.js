@@ -365,12 +365,11 @@ sound.validate = function(arg, schema) {
 }
 
 const validateParam = function(name, value, constraint) {
-  // first thing to do is see if this param needs a default
+  // first thing to do is see if this param is empty, has a default, and is required
   if ( _.isUndefined(value) || _.isNull(value) || value === '' ) {
-    // check to see if a default was provided
-    // set the default (if there is one)
+    // check to see if a default was provided and set it
     if ( _.isUndefined(constraint._default) ) {
-      // no default provided, so check if this is required
+      // no default provided, now check if it is required
       if ( constraint._required ) {
         // yes, required, so this fails
         return {
