@@ -258,6 +258,11 @@ Constraint.prototype.isToken = function(msg) {
   return this
 }
 
+Constraint.prototype._inject = function(item) {
+  this.rules.push(item)
+  return this
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 // conversions
 
@@ -477,7 +482,7 @@ const validateParam = function(name, value, constraint) {
       }
     }
     else if ( r.type === T_IS_NOT_EMPTY ) {
-      if ( value === '' ) {
+      if ( value.trim() === '' ) {
         return {
           ok  : false,
           err : r.msg || name + ' should be provided',

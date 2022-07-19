@@ -15,6 +15,17 @@ Advantages over JSON Schema:
 * control over error message depending on which validation fails
 * errors relate to the property name, not randomly placed in an arbitrary array
 
+Code Coverage using `c8`:
+
+```
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------|---------|----------|---------|---------|-------------------
+All files |     100 |      100 |     100 |     100 |                   
+ sound.js |     100 |      100 |     100 |     100 |                   
+----------|---------|----------|---------|---------|-------------------
+```
+
 ## Synopsis ##
 
 Take an object and verify its properties:
