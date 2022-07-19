@@ -18,6 +18,7 @@ const errorsSchema = {
   username4 : sound().isString().isRequired().isMaxLen(8, 'Must be shorter than 8 chars.'),
   col1      : sound().isString().isEnum([ 'red', 'green', 'blue' ], "Must be one of 'red', 'green', or 'blue'."),
   col2      : sound().isString().isEnum([ 'red', 'green', 'blue' ], "Must be one of 'red', 'green', or 'blue'."),
+  date      : sound().isDate(),
 }
 
 const tests = [
@@ -60,6 +61,7 @@ const tests = [
       username4 : '12345678',
       col1      : 'purple',
       col2      : ' ',
+      date      : 123,
     },
     test : function(t, err, res) {
       t.ok(_.isObject(err), "err is an object")
@@ -71,12 +73,14 @@ const tests = [
       t.ok( _.isUndefined(err.username4), "username4 is ok")
       t.ok(!_.isUndefined(err.col1), "col1 fails")
       t.ok(!_.isUndefined(err.col2), "col2 fails")
+      t.ok(!_.isUndefined(err.date), "date fails")
 
       t.equal(err.username1, 'Username should only contain letters, numbers and the dash character.', 'username1 error is correct')
       t.equal(err.username2, 'Username must be at least 3 characters long', 'username2 error is correct')
       t.equal(err.username3, 'Must be shorter than 8 chars.', 'username3 error is correct')
       t.equal(err.col1, "Must be one of 'red', 'green', or 'blue'.", 'col1 error is correct')
       t.equal(err.col2, "Must be one of 'red', 'green', or 'blue'.", 'col2 error is correct')
+      t.equal(err.date, "date should be a date", 'date error is correct')
 
       t.end()
     },
