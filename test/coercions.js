@@ -1,6 +1,6 @@
-var _ = require('underscore');
-var test = require("tape");
-var sound = require('../sound.js');
+import * as _ from 'underscore';
+import test from 'tape';
+import sound from '../sound.js';
 
 var coercionsForStrings = {
     percentage0 : sound().isString().toTrim().isRequired().isMatch(/^\d+$/).toInteger().isMinVal(0).isMaxVal(100),

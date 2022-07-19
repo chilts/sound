@@ -10,8 +10,9 @@
 //
 // --------------------------------------------------------------------------------------------------------------------
 
-const _ = require('underscore');
-const isemail = require('isemail');
+// npm
+import * as _ from 'underscore';
+import isemail from 'isemail';
 
 const valid = {
     boolean : {
@@ -631,6 +632,6 @@ const validateParam = function(name, value, constraint) {
 
 // --------------------------------------------------------------------------------------------------------------------
 
-module.exports = sound;
+export default sound;
 
 // --------------------------------------------------------------------------------------------------------------------

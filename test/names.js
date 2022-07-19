@@ -1,6 +1,6 @@
-var _ = require('underscore');
-var test = require("tape");
-var sound = require('../sound.js');
+import * as _ from 'underscore';
+import test from 'tape';
+import sound from '../sound.js';
 
 // two different ways of specifying the name of the parameter
 

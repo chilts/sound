@@ -3,6 +3,7 @@
   "description": "Make sure your data is sound! Schema generator, converter and validation library for Node.js.",
   "version": "2.7.0",
   "main": "sound.js",
+  "type": "module",
   "homepage": "https://github.com/chilts/sound",
   "repository": {
     "type": "git",
