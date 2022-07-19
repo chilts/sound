@@ -1,13 +1,19 @@
 {
   "name": "sound",
-  "description": "Make sure your data is sound! Validation and conversion library for Node.js.",
+  "description": "Make sure your data is sound! Schema generator, converter and validation library for Node.js.",
   "version": "2.7.0",
   "main": "sound.js",
+  "homepage": "https://github.com/chilts/sound",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chilts/sound.git"
+  },
+  "bugs": {
+    "url": "http://github.com/chilts/sound/issues",
+    "mail": "andychilton@gmail.com"
+  },
   "scripts": {
     "test": "tape test/*.js"
-  },
-  "engines": {
-    "node": ">= 0.6.0"
   },
   "dependencies": {
     "isemail": "^3.1.3",
@@ -16,26 +22,17 @@
   "devDependencies": {
     "tape": "^4.9.1"
   },
-  "homepage": "https://gitlab.com/chilts/sound",
-  "repository": {
-    "type": "git",
-    "url": "git://gitlab.com/chilts/sound.git"
+  "author": {
+    "name": "Andrew Chilton",
+    "email": "andychilton@gmail.com",
+    "url": "https://chilts.org/"
   },
-  "bugs": {
-    "url": "http://gitlab.com/chilts/sound/issues",
-    "mail": "andychilton@gmail.com"
-  },
+  "contributors": [],
   "keywords": [
     "validate",
     "validation",
     "input",
     "params"
   ],
-  "author": {
-    "name": "Andrew Chilton",
-    "email": "andychilton@gmail.com",
-    "url": "http://www.chilts.org/"
-  },
-  "contributors": [],
   "license": "MIT"
 }

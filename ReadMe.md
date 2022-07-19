@@ -1,6 +1,6 @@
-sound.js - make sure your data is sound!
+# Sound #
 
-[![Build Status](https://travis-ci.org/chilts/sound.png?branch=master)](https://travis-ci.org/chilts/sound)
+Make sure your data is sound! Schema generator, converter and validation library for Node.js.
 
 ## About ##
 

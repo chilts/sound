@@ -1,10 +1,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 //
-// sound.js - Make sure your data is sound! A validation library for Node.js.
+// sound - Make sure your data is sound! Schema generator, converter and validation library for Node.js.
 //
 // Copyright (c) 2013 Andrew Chilton
-// - http://www.chilts.org/blog/
 // - andychilton@gmail.com
+// - https://chilts.org/
 //
 // License: http://chilts.mit-license.org/2013/
 //
