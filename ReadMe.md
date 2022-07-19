@@ -4,80 +4,74 @@ sound.js - make sure your data is sound!
 
 ## About ##
 
-Take an incoming form from the web (a single-level object of strings), convert and validate them, and use the output
-values.
+* powerful schema generator and validator
+* control over your error messages
+* errors in objects, not arrays
 
-e.g. Take a web form of title and Markdown:
+Advantages over JSON Schema:
 
-```
-const schema = {
-  title : sound('title').isString().toTrim().isRequired().isMaxLen(256),
-  markdown : sound('body').hasDefault('').isString(),
-}
-```
-
-Here you can see that the title is required (after trimming) and can't be more than 256 chars long. The body can be
-left out but will be set to the empty string as a default.
-
-An input of:
-
-```
-{
-  title : ' Hello, World! ',
-}
-```
-
-Would give an output of:
-
-```
-{
-  ok : true,
-  arg : {
-    title : ' Hello, World! ',
-  },
-  val : {
-    title : 'Hello, World!',
-    body : '',
-  },
-  err : {},
-}
-```
-
-If `ok` is `false`, then `err` will contain errors related to each field.
+* much much simpler to generate and use
+* better default error messages
+* control over error message depending on which validation fails
+* errors relate to the property name, not randomly placed in an arbitrary array
 
 ## Synopsis ##
 
+Take an object and verify its properties:
 
+```
+import sound from 'sound'
+
+const schema = {
+  username: sound().isString().toLowerCase().toTrim().isRequired().isMatch(/^[a-z0-9]{4,16}$/),
+  password: sound().isString().isRequired().isMinLen(8),
+  age: sound().isInteger().isRequired().isMinVal(13),
+}
+
+const user = {
+  username: 'chilts',
+  password: 'abcdefgh',
+  age: 15,
+}
+
+const check = sound.validate(params, schema)
+if ( check.ok ) {
+  // everything validated ... params contained in `check.val`
+}
+else {
+  // something failed validation ... errors contained in `check.err`
+}
+```
 
 ## Examples ##
 
 ```
-var schema = {
-    username : sound().isString().toLowerCase().toTrim().isRequired().isMatch(/^[a-z0-9]{4,16}$/),
-    password : sound().isString().isRequired().isMinLen(8).isMaxLen(100),
-    email    : sound().isString().isRequired().isEmailAddress(),
-    logins   : sound().isInteger().isRequired().isMinVal(0),
-    awesome  : sound().isString().hasDefault('yes').toBoolean().isBoolean(),
-    url      : sound().isString().isUrl(), // optional
-    isAdmin  : sound().isString().isRequired().toBoolean().isBoolean(),
-    dob      : sound().isDate(), // accepts 'yyyy-mm-dd'
-    agree    : sound().isString().toBoolean().isEqual(true), // make sure they tick T&C's
-    color    : sound().isString().toLowerCase().toTrim().isRequired().isEnum([ 'red', 'green', 'blue' ]),
-};
+const schema = {
+  username : sound().isString().toLowerCase().toTrim().isRequired().isMatch(/^[a-z0-9]{4,16}$/),
+  password : sound().isString().isRequired().isMinLen(8).isMaxLen(100),
+  email    : sound().isString().isRequired().isEmailAddress(),
+  logins   : sound().isInteger().isRequired().isMinVal(0),
+  awesome  : sound().isString().hasDefault('yes').toBoolean().isBoolean(),
+  url      : sound().isString().isUrl(), // optional
+  isAdmin  : sound().isString().isRequired().toBoolean().isBoolean(),
+  dob      : sound().isDate(), // accepts 'yyyy-mm-dd'
+  agree    : sound().isString().toBoolean().isEqual(true), // make sure they tick T&C's
+  color    : sound().isString().toLowerCase().toTrim().isRequired().isEnum([ 'red', 'green', 'blue' ]),
+}
 
-var params = {
-    username : 'chilts',
-    password : 'abcdefgh',
-    email : 'me@example.com',
-    agree : 'on', // will convert to true
-};
+const params = {
+  username : 'chilts',
+  password : 'abcdefgh',
+  email : 'me@example.com',
+  agree : 'on', // will convert to true
+}
 
-var out = sound.validate(params, schema);
+const out = sound.validate(params, schema)
 if ( out.ok ) {
-    // everything validated ... params contained in `out.val`
+  // everything validated ... params contained in `out.val`
 }
 else {
-    // something failed validation ... errors contained in `out.err`
+  // something failed validation ... errors contained in `out.err`
 }
 ```
 
@@ -87,11 +81,11 @@ field in the schema will be reported.
 If no failures are detected, err is just `{}`. You need to check `out.ok` to see if validation passed or failed.
 
 ```
-var out = sound.validate(params1, schema)
+const out = sound.validate(params1, schema)
 if ( !out.ok ) {
-    // something failed, check the keys in `out.err.*`
-    ...
-    return;
+  // something failed, check the keys in `out.err.*`
+  ...
+  return
 }
 
 // all ok
@@ -101,10 +95,10 @@ An error may look like:
 
 ```
 {
-    password: 'Password should be at least 8 characters'
-    logins: 'Logins should be of type integer',
-    pi: 'PI should be of type float',
-    date: 'Date should be of type date'
+  password: 'Password should be at least 8 characters'
+  logins: 'Logins should be of type integer',
+  pi: 'PI should be of type float',
+  date: 'Date should be of type date'
 }
 ```
 
@@ -123,11 +117,14 @@ problem and overlap required to keep trying every test even if the first one has
 
 ## Author ##
 
-Written by [Andrew Chilton](http://chilts.org/) - [Blog](http://chilts.org/blog/) -
-[Twitter](https://twitter.com/andychilton).
+Written by
+
+* [Andrew Chilton](https://chilts.org/)
+* [Twitter](https://twitter.com/andychilton).
+* [GitHub](https://github.com/chilts).
 
 ## License ##
 
-MIT - http://chilts.mit-license.org/2013/
+MIT - https://chilts.mit-license.org/2013/
 
 (Ends)
