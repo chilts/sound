@@ -14,13 +14,17 @@
     "mail": "andychilton@gmail.com"
   },
   "scripts": {
-    "test": "tape test/*.js"
+    "test": "npm run eslint && npm run tape",
+    "tape": "tape test/*.js",
+    "eslint": "eslint **/*.js",
+    "eslint-fix": "eslint --fix **/*.js"
   },
   "dependencies": {
     "isemail": "^3.2.0",
     "underscore": "^1.13.4"
   },
   "devDependencies": {
+    "eslint": "^8.20.0",
     "tape": "^5.5.3"
   },
   "author": {
