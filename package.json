@@ -16,11 +16,11 @@
     "test": "tape test/*.js"
   },
   "dependencies": {
-    "isemail": "^3.1.3",
-    "underscore": "*"
+    "isemail": "^3.2.0",
+    "underscore": "^1.13.4"
   },
   "devDependencies": {
-    "tape": "^4.9.1"
+    "tape": "^5.5.3"
   },
   "author": {
     "name": "Andrew Chilton",
