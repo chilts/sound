@@ -1,4 +1,4 @@
-import * as _ from 'underscore'
+import _ from 'lodash'
 import test from 'tape'
 import sound from '../sound.js'
 
@@ -29,8 +29,8 @@ const tests = [
     schema : namesSchema1,
     params : {},
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "err is an object")
-      t.ok(_.isObject(res), "res is an object")
+      t.ok(_.isPlainObject(err), "err is an object")
+      t.ok(_.isPlainObject(res), "res is an object")
 
       t.ok(!_.isUndefined(err.username), "username fails")
       t.ok(!_.isUndefined(err.password), "password fails")
@@ -62,8 +62,8 @@ const tests = [
       col : 'purple',
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "err is an object")
-      t.ok(_.isObject(res), "res is an object")
+      t.ok(_.isPlainObject(err), "err is an object")
+      t.ok(_.isPlainObject(res), "res is an object")
 
       t.ok(!_.isUndefined(err.username), "username fails")
       t.ok(!_.isUndefined(err.password), "password fails")
@@ -95,8 +95,8 @@ const tests = [
       col : 'purple',
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "err is an object")
-      t.ok(_.isObject(res), "res is an object")
+      t.ok(_.isPlainObject(err), "err is an object")
+      t.ok(_.isPlainObject(res), "res is an object")
 
       t.ok(!_.isUndefined(err.username), "username fails")
       t.ok(!_.isUndefined(err.password), "password fails")

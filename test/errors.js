@@ -1,4 +1,4 @@
-import * as _ from 'underscore'
+import _ from 'lodash'
 import test from 'tape'
 import sound from '../sound.js'
 
@@ -30,8 +30,8 @@ const tests = [
       col2: '',
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "err is an object")
-      t.ok(_.isObject(res), "res is an object")
+      t.ok(_.isPlainObject(err), "err is an object")
+      t.ok(_.isPlainObject(res), "res is an object")
 
       t.ok(!_.isUndefined(err.username), "username fails")
       t.ok(!_.isUndefined(err.logins), "logins fails")
@@ -64,8 +64,8 @@ const tests = [
       date      : 123,
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "err is an object")
-      t.ok(_.isObject(res), "res is an object")
+      t.ok(_.isPlainObject(err), "err is an object")
+      t.ok(_.isPlainObject(res), "res is an object")
 
       t.ok(!_.isUndefined(err.username1), "username1 fails")
       t.ok(!_.isUndefined(err.username2), "username2 fails")

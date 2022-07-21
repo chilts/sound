@@ -1,4 +1,4 @@
-import * as _ from 'underscore'
+import _ from 'lodash'
 import test from 'tape'
 import sound from '../sound.js'
 
@@ -50,8 +50,8 @@ const tests = [
       percentage5 : 'not a number',
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "err is an object")
-      t.ok(_.isObject(res), "res is an object")
+      t.ok(_.isPlainObject(err), "err is an object")
+      t.ok(_.isPlainObject(res), "res is an object")
 
       t.ok(!_.isUndefined(err.percentage0), "-1 fails the regex")
       t.ok(_.isUndefined(err.percentage1), "0 is ok")
@@ -88,8 +88,8 @@ const tests = [
       bool10 : 'invalid',
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "err is an object")
-      t.ok(_.isObject(res), "res is an object")
+      t.ok(_.isPlainObject(err), "err is an object")
+      t.ok(_.isPlainObject(res), "res is an object")
 
       t.ok( _.isUndefined(err.bool0), "0 is ok")
       t.ok( _.isUndefined(err.bool1), "1 is ok")
@@ -133,8 +133,8 @@ const tests = [
       float7 : 'invalid',
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "err is an object")
-      t.ok(_.isObject(res), "res is an object")
+      t.ok(_.isPlainObject(err), "err is an object")
+      t.ok(_.isPlainObject(res), "res is an object")
 
       t.ok( _.isUndefined(err.float0), "0 is ok")
       t.ok( _.isUndefined(err.float1), "1 is ok")

@@ -1,4 +1,4 @@
-import * as _ from 'underscore'
+import _ from 'lodash'
 import test from 'tape'
 import sound from '../sound.js'
 
@@ -24,7 +24,7 @@ const tests = [
       email    : 'me@example.com',
     },
     test : function(t, res) {
-      t.ok(_.isObject(res.err), "is an object")
+      t.ok(_.isPlainObject(res.err), "is an object")
 
       t.equal(res.ok, true, 'Sign up passes')
 
@@ -49,7 +49,7 @@ const tests = [
       email    : '',
     },
     test : function(t, res) {
-      t.ok(_.isObject(res.err), "is an object")
+      t.ok(_.isPlainObject(res.err), "is an object")
 
       t.equal(res.ok, true, 'Sign up passes')
 
@@ -72,7 +72,7 @@ const tests = [
       username : 'chilts',
     },
     test : function(t, res) {
-      t.ok(_.isObject(res.err), "is an object")
+      t.ok(_.isPlainObject(res.err), "is an object")
 
       t.equal(res.ok, true, 'Validates ok')
 

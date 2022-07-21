@@ -15,7 +15,14 @@ Advantages over JSON Schema:
 * control over error message depending on which validation fails
 * errors relate to the property name, not randomly placed in an arbitrary array
 
-Code Coverage using `c8`:
+We aim to test every part of `sound` which means we currently have over 350 tests.
+
+```
+# tests 369
+# pass  369
+```
+
+We also aim to have 100% code coverage of `sound.js` - using `c8` - which is now almost 700 lines:
 
 ```
 ----------|---------|----------|---------|---------|-------------------
@@ -127,6 +134,42 @@ check.val: {
   agree: true,
 }
 ```
+
+## Checks ##
+
+* isString()
+* isInteger()
+* isFloat()
+* isBoolean()
+* isDate()
+* isObject()
+* isArray()
+* isUrl()
+* isDomain()
+* isEmailAddress()
+* isToken()
+* isMatch()
+* isEnum()
+* toTrim()
+* toLowerCase()
+* toUpperCase()
+* toReplace()
+* isEqual()
+* isNotEmpty()
+* isMinLen()
+* isMaxLen()
+* isMinVal()
+* isMaxVal()
+* isGreaterThan()
+* isLessThan()
+
+## Coercions ##
+
+* toString()
+* toString()
+* toInteger()
+* toFloat()
+* toBoolean()
 
 ## Unknown Params ##
 

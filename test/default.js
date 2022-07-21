@@ -1,4 +1,4 @@
-import * as _ from 'underscore'
+import _ from 'lodash'
 import test from 'tape'
 import sound from '../sound.js'
 
@@ -30,7 +30,7 @@ const tests = [
       greetingB : '',
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
 
       t.ok( _.isUndefined(err.greeting1), "string passes")
       t.ok( _.isUndefined(err.greeting2), "string passes")
@@ -83,7 +83,7 @@ const tests = [
       thin1 : "no",
     },
     test : function(t, err, res) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
 
       t.ok( _.isUndefined(err.tall1),  "string passes")
       t.ok( _.isUndefined(err.small1), "string passes")

@@ -1,4 +1,4 @@
-import * as _ from 'underscore'
+import _ from 'lodash'
 import test from 'tape'
 import sound from '../sound.js'
 
@@ -142,7 +142,7 @@ const tests = [
       yes      : 'yes',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
       t.end()
     },
   },
@@ -163,7 +163,7 @@ const tests = [
       usernameA : '',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
       t.ok( _.isUndefined(err.username1), "username1 string passes")
       t.ok( _.isUndefined(err.username2), "username2 string passes")
       t.ok(!_.isUndefined(err.username3), "username3 string fails")
@@ -206,7 +206,7 @@ const tests = [
       int13 : 8,
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
       t.ok( _.isUndefined(err.int1), "integer passes")
       t.ok( _.isUndefined(err.int2), "integer passes")
       t.ok(!_.isUndefined(err.int3), "integer passes")
@@ -249,7 +249,7 @@ const tests = [
       url7 : 'http://localhost.localdomain:8000/',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
       t.ok( _.isUndefined(err.url1), "url1 passes")
       t.ok( _.isUndefined(err.url2), "url2 passes")
       t.ok( _.isUndefined(err.url3), "url3 passes")
@@ -295,7 +295,7 @@ const tests = [
       domain24 : 'status-2345.example.com',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
       t.ok( _.isUndefined(err.domain1), "domain1 passes")
       t.ok( _.isUndefined(err.domain2), "domain2 passes")
       t.ok( _.isUndefined(err.domain3), "domain3 passes")
@@ -341,7 +341,7 @@ const tests = [
       email8 : 'me@t.123',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
       t.ok(!_.isUndefined(err.email1), "email1 fails")
       t.ok(!_.isUndefined(err.email2), "email2 fails")
       t.ok(!_.isUndefined(err.email3), "email3 fails")
@@ -371,7 +371,7 @@ const tests = [
       tok7 : '*&%@#&',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
       t.ok( _.isUndefined(err.tok1), "tok1 passes")
       t.ok( _.isUndefined(err.tok2), "tok2 passes")
       t.ok(!_.isUndefined(err.tok3), "tok3 fails")
@@ -394,7 +394,7 @@ const tests = [
       url   : 'http://chilts.org/',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
 
       t.end()
     },
@@ -409,7 +409,7 @@ const tests = [
       favColour2 : 'purple',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
 
       t.ok( _.isUndefined(err.username), "username is correct")
       t.ok( _.isUndefined(err.favColour1), "red is ok")
@@ -435,7 +435,7 @@ const tests = [
       favColour7 : '',
     },
     test : function(t, err) {
-      t.ok(_.isObject(err), "is an object")
+      t.ok(_.isPlainObject(err), "is an object")
 
       t.ok( _.isUndefined(err.username), "username is correct")
       t.ok( _.isUndefined(err.favColour1), "'red' is ok")

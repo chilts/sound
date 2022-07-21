@@ -11,7 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // npm
-import * as _ from 'underscore'
+import _ from 'lodash'
 import isemail from 'isemail'
 
 const valid = {
@@ -34,6 +34,8 @@ const T_IS_INTEGER       = 'isInteger'
 const T_IS_FLOAT         = 'isFloat'
 const T_IS_BOOLEAN       = 'isBoolean'
 const T_IS_DATE          = 'isDate'
+const T_IS_OBJECT        = 'isObject'
+const T_IS_ARRAY         = 'isArray'
 
 const T_IS_URL           = 'isUrl'
 const T_IS_DOMAIN        = 'isDomain'
@@ -126,6 +128,22 @@ Constraint.prototype.isBoolean = function(msg) {
 Constraint.prototype.isDate = function(msg) {
   this.rules.push({
     type : T_IS_DATE,
+    msg  : msg,
+  })
+  return this
+}
+
+Constraint.prototype.isObject = function(msg) {
+  this.rules.push({
+    type : T_IS_OBJECT,
+    msg  : msg,
+  })
+  return this
+}
+
+Constraint.prototype.isArray = function(msg) {
+  this.rules.push({
+    type : T_IS_ARRAY,
     msg  : msg,
   })
   return this
@@ -438,6 +456,22 @@ const validateParam = function(name, value, constraint) {
         return {
           ok  : false,
           err : r.msg || name + ' should be a date',
+        }
+      }
+    }
+    else if ( r.type === T_IS_OBJECT ) {
+      if ( !_.isPlainObject(value) ) {
+        return {
+          ok  : false,
+          err : r.msg || name + ' should be an object',
+        }
+      }
+    }
+    else if ( r.type === T_IS_ARRAY ) {
+      if ( !_.isArray(value) ) {
+        return {
+          ok  : false,
+          err : r.msg || name + ' should be an array',
         }
       }
     }
